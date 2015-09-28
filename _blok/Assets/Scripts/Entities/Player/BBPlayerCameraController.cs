@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class PlayerCameraController : MonoBehaviour {
+public class BBPlayerCameraController : MonoBehaviour {
 
 	public Vector2 focusDimensions;
-	public float cameraDist = -30.0f;
-	public float baseFOV = 40.0f;
-	public float expandDistThresholdFOV = 10.0f;
+	public float baseCameraDist = -30.0f;
+	public float expandDistThreshold = 10.0f;
 	public float expandTime = .3f;
+	public float expandFactor = 2.2f;
 	
 	private GameObject targetPlayer;
-	private Controller3D targetController;
+	private BBController3D targetController;
+	
+	private BBGameController gameController;
+	
 	private FocusArea focusArea;
 	
 	public float verticalOffset;
@@ -24,26 +27,29 @@ public class PlayerCameraController : MonoBehaviour {
 	private float smoothLookVelocityX;
 	private float smoothVelocityY;
 	
-	private float expandFOVVelocity;
+	private float expandZVelocity;
 	
 	private bool isLookAheadStopped;
 	
-	private GameObject[] players;
 	// Use this for initialization
 	void Start () {
+		this.gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<BBGameController>();
+	}
+	
+	void Update() {
 
 	}
 	
-	void LateUpdate () {	
+	void LateUpdate () {
+		if (this.targetPlayer == null) {
+			return;
+		}	
 		//Determine camera positioning
 		this.focusArea.Update(this.targetController.boxCollider.bounds);
-		
 		Vector2 focusPosition = this.focusArea.center + Vector2.up * this.verticalOffset;
-		
 		if (this.focusArea.velocity.x != 0) {
 			this.lookAheadDirX = Mathf.Sign(this.focusArea.velocity.x);
 			float inputX = this.targetController.PlayerInput.x;
-			float inputY = this.targetController.PlayerInput.y;
 			if (Mathf.Sign(inputX) == Mathf.Sign(this.focusArea.velocity.x) && this.targetController.PlayerInput.x != 0) {
 				this.isLookAheadStopped = false;
 				this.targetLookAheadX = this.lookAheadDirX * this.lookAheadDistX;
@@ -54,28 +60,33 @@ public class PlayerCameraController : MonoBehaviour {
 				}
 			}
 		}
-		
 		this.currentLookAheadX = Mathf.SmoothDamp(this.currentLookAheadX, this.targetLookAheadX, ref this.smoothLookVelocityX, this.lookSmoothTimeX);
-		
 		focusPosition.y = Mathf.SmoothDamp(transform.position.y, focusPosition.y, ref this.smoothVelocityY, this.verticalSmoothTime);
 		focusPosition += Vector2.right * this.currentLookAheadX;
-		//Mostly arbitrary number. Negative to make camera in front of stage
-		transform.position = (Vector3) focusPosition + Vector3.forward * cameraDist;
-		
 		//Determine FOV
-		float maxDistance = .0f;
-		foreach (GameObject player in this.players) {
-			float currentDistance = Vector2.Distance(this.targetPlayer.transform.position, player.transform.position);
-			if (currentDistance > maxDistance) {
-				maxDistance = currentDistance;
+		float maxDist = .0f;
+
+		foreach (GameObject player in this.gameController.Players) {
+			if (player == null) {
+				continue;
+			}
+			float currentDist = Vector2.Distance(this.targetPlayer.transform.position, player.transform.position);
+			if (currentDist > maxDist) {
+				maxDist = currentDist;
 			}
 		}
-		if (maxDistance > this.expandDistThresholdFOV) {
-			float fovBuffer = (maxDistance - this.expandDistThresholdFOV) * 2.0f;
-			Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, this.baseFOV + fovBuffer, ref this.expandFOVVelocity, this.expandTime);
-		} else {
-			Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, this.baseFOV, ref this.expandFOVVelocity, this.expandTime);
-		}
+
+		//Adjust FOV accordingly from max distance found
+//		if (maxDist > this.expandDistThresholdFOV) {
+//			float fovBuffer = (maxDist - this.expandDistThresholdFOV) * this.expandFactor;
+//			Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, this.baseFOV + fovBuffer, ref this.expandFOVVelocity, this.expandTime);
+//		} else {
+//			Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, this.baseFOV, ref this.expandFOVVelocity, this.expandTime);
+//		}
+		
+		float cameraDistBuffer = (maxDist > this.expandDistThreshold) ? (maxDist - this.expandDistThreshold) * this.expandFactor : .0f;
+		float targetZ = Mathf.SmoothDamp(transform.position.z, this.baseCameraDist - cameraDistBuffer, ref this.expandZVelocity, this.expandTime); 
+		transform.position = (Vector3) focusPosition + targetZ * Vector3.forward;
 	}
 	
 	void OnDrawGizmos() {
@@ -86,16 +97,7 @@ public class PlayerCameraController : MonoBehaviour {
 	public void SetTargetPlayer(GameObject targetPlayer) {
 		this.targetPlayer = targetPlayer;
 		//Create array of non-main player objects
-		GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
-		this.players = new GameObject[tempPlayers.Length - 1];
-		int index = 0;
-		foreach (GameObject player in tempPlayers) {
-			if (player != this.targetPlayer) {
-				this.players[index] = player;
-				index++;
-			}
-		}
-		this.targetController = this.targetPlayer.GetComponent<Controller3D>();
+		this.targetController = this.targetPlayer.GetComponent<BBController3D>();
 		this.focusArea = new FocusArea(this.targetController.boxCollider.bounds, this.focusDimensions);
 	}
 	

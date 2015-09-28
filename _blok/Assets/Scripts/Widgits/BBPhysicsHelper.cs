@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PhysicsHelper {
+public class BBPhysicsHelper {
 
 	public static float ObjectGravity(float jumpHeight, float timeToJumpApex) {
 		return (2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);

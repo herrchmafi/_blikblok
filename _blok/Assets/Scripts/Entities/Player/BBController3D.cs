@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Controller3D : RaycastController {
+public class BBController3D : RaycastController {
 
 	private CollisionInfo collisionInfo;
 	public CollisionInfo CollInfo {

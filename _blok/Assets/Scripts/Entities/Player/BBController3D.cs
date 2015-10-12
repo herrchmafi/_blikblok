@@ -46,6 +46,12 @@ public class BBController3D : RaycastController {
 		transform.Translate(distVect);
 	}
 	
+	public void LookAt(Vector3 lookVect) {
+		Vector3 heightCorrectedVect = new Vector3(lookVect.x, lookVect.y, transform.position.z);
+		print(heightCorrectedVect);
+		transform.LookAt(heightCorrectedVect);
+	}
+	
 	
 	private void HandleHorizontalCollisions (ref Vector3 distVect) {
 		float dirX = this.collisionInfo.faceDir;

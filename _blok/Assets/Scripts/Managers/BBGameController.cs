@@ -12,6 +12,7 @@ public class BBGameController : MonoBehaviour {
 	public GameObject MainPlayer {
 		get { return this.mainPlayer; }
 	}
+	
 	private BBPlayerCameraController playerCameraController;
 
 	// Use this for initialization
@@ -25,6 +26,7 @@ public class BBGameController : MonoBehaviour {
 				break;
 			}
 		}
+		
 	}
 	
 	// Update is called once per frame
@@ -34,6 +36,7 @@ public class BBGameController : MonoBehaviour {
 	
 	void OnEnable() {
 		BBEventController.OnPlayerDeath += UpdatePlayers;
+		
 	}
 	
 	void OnDisable() {

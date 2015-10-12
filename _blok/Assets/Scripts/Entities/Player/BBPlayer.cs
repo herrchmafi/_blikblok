@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 [RequireComponent (typeof (BoxCollider))]
-public class BBPlayer : BBLivingEntity {
+public class BBPlayer : MonoBehaviour {
 	[Range(0, 3)]
 	public int playerNumber;
 	
@@ -11,15 +11,6 @@ public class BBPlayer : BBLivingEntity {
 	
 	public float jumpHeight = 4.0f;
 	public float timeToJumpApex = 2.0f;
-	
-	enum MovementState {
-		SPAWNING = 0,
-		IDLE = 1,
-		WALKING = 2,
-		JUMPING = 3,
-	}
-	[SerializeField]
-	private MovementState currentState;
 	
 	private float gravity;
 	private float jumpVelocity;
@@ -31,17 +22,17 @@ public class BBPlayer : BBLivingEntity {
 
 	private BBController3D controller;
 	
-	private Rigidbody rigidBody;
+	private BBGameController gameController;
 	
-	private Animator animator;
+	private BBActionPlayerController actionPlayerController;
 	
 	// Use this for initialization
 	void Start () {
 		this.gravity = BBPhysicsHelper.ObjectGravity(this.jumpHeight, this.timeToJumpApex);
 		this.jumpVelocity = BBPhysicsHelper.JumpVelocity(this.gravity, this.timeToJumpApex);
 		this.controller = gameObject.GetComponent<BBController3D>();
-		this.animator = gameObject.GetComponent<Animator>();
-		this.currentState = MovementState.IDLE;
+		this.gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<BBGameController>();
+		this.actionPlayerController = transform.Find("Action Player").GetComponent<BBActionPlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -54,26 +45,28 @@ public class BBPlayer : BBLivingEntity {
 		//Jumping Logic
 		if (this.controller.CollInfo.isBack) {
 			if (Input.GetButtonDown("Jump" + this.playerNumber)) {
-				this.currentState = MovementState.JUMPING;
+				this.actionPlayerController.Jump();
 				this.velocityVect.z = this.jumpVelocity;
 			} else if ((Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0)) {
-				this.currentState = MovementState.WALKING;
+				this.actionPlayerController.Walk();
 			} else {
-				this.currentState = MovementState.IDLE;
+				this.actionPlayerController.Idle();
 			}	
 		}
-		
-		//Set Animator State
-		this.animator.SetInteger("Movement_State", (int)this.currentState);
 		
 		this.velocityVect.z += this.gravity * Time.deltaTime;
 		this.controller.Move(this.velocityVect * Time.deltaTime, input);
 		if (this.controller.CollInfo.isBack) {
 			this.velocityVect.z = .0f;
 		}
+		//Looking
+		Vector3 mousePos = Input.mousePosition;
+		mousePos.z = Camera.main.transform.position.z - transform.position.z;
+		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+		Vector2 distToMouse = new Vector2(mousePos.x - screenPos.x, mousePos.y - screenPos.y);
+		float angleBetweenPosAndMouse = Mathf.Atan2(distToMouse.y, distToMouse.x) * Mathf.Rad2Deg;
+		this.actionPlayerController.Look(new Vector3(0, 0, angleBetweenPosAndMouse));
 	}
-	
-
 	
 	void OnCollisionEnter(Collision collision) {
 

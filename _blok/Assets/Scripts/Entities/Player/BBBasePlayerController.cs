@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 [RequireComponent (typeof (BoxCollider))]
-public class BBPlayer : MonoBehaviour {
+public class BBBasePlayerController : MonoBehaviour {
 	[Range(0, 3)]
 	public int playerNumber;
 	
@@ -31,8 +31,8 @@ public class BBPlayer : MonoBehaviour {
 		this.gravity = BBPhysicsHelper.ObjectGravity(this.jumpHeight, this.timeToJumpApex);
 		this.jumpVelocity = BBPhysicsHelper.JumpVelocity(this.gravity, this.timeToJumpApex);
 		this.controller = gameObject.GetComponent<BBController3D>();
-		this.gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<BBGameController>();
-		this.actionPlayerController = transform.Find("Action Player").GetComponent<BBActionPlayerController>();
+		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
+		this.actionPlayerController = transform.Find(BBSceneConstants.actionPlayer).GetComponent<BBActionPlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -64,8 +64,14 @@ public class BBPlayer : MonoBehaviour {
 		mousePos.z = Camera.main.transform.position.z - transform.position.z;
 		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
 		Vector2 distToMouse = new Vector2(mousePos.x - screenPos.x, mousePos.y - screenPos.y);
-		float angleBetweenPosAndMouse = Mathf.Atan2(distToMouse.y, distToMouse.x) * Mathf.Rad2Deg;
+		
+		float angleBetweenPosAndMouse = Mathf.Atan2(distToMouse.y, distToMouse.x) * Mathf.Rad2Deg + BBPhysicsConstants.dirOffset;
 		this.actionPlayerController.Look(new Vector3(0, 0, angleBetweenPosAndMouse));
+		
+		//Player input
+		if (Input.GetButtonDown("NormalAttack")) {
+			this.actionPlayerController.NormalAttack();
+		}
 	}
 	
 	void OnCollisionEnter(Collision collision) {

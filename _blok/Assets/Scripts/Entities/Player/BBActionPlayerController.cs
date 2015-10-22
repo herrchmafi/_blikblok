@@ -15,11 +15,19 @@ public class BBActionPlayerController : BBLivingEntity {
 		get { return this.currentState; }
 	}
 	
-	private Animator animator;
+	public Transform meleeFab;
+	private Transform meleeFabLocal;
+	
+	private BBAnimatedPlayer animatedPlayer;
+	
+	
 	// Use this for initialization
 	void Start () {
-		this.animator = gameObject.GetComponent<Animator>();
 		this.currentState = State.IDLE;
+		this.meleeFabLocal = (Transform)Instantiate(this.meleeFab, transform.position, transform.rotation);
+		this.meleeFabLocal.parent = transform;
+		this.meleeFabLocal.localPosition += Vector3.down;
+		this.animatedPlayer = transform.FindChild(BBSceneConstants.animatedPlayer).GetComponent<BBAnimatedPlayer>();
 	}
 	
 	// Update is called once per frame
@@ -29,18 +37,25 @@ public class BBActionPlayerController : BBLivingEntity {
 	
 	public void Idle() {
 		this.currentState = State.IDLE;
-		this.SetAnimationState(this.currentState);
+		this.animatedPlayer.SetAnimationState(this.currentState);
 	}
 	
 	public void Walk() {
 		this.currentState = State.WALKING;
-		this.SetAnimationState(this.currentState);
+		this.animatedPlayer.SetAnimationState(this.currentState);
 	}
 	
 	public void Jump() {
 		this.currentState = State.JUMPING;
-		this.SetAnimationState(this.currentState);
-		print ("Jump");
+		this.animatedPlayer.SetAnimationState(this.currentState);
+	}
+	
+	public void NormalAttack() {
+		this.meleeFabLocal.GetComponent<BBMelee>().IsAttacking = true;
+	}
+	
+	public void SpecialAttack() {
+	
 	}
 	
 	public void Look(Vector3 lookVect) {
@@ -48,8 +63,5 @@ public class BBActionPlayerController : BBLivingEntity {
 	}
 	
 	
-	private void SetAnimationState(State state) {
-		this.animator.SetInteger("Movement_State", (int)state);
-	}
 	
 }

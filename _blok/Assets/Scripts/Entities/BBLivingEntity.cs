@@ -12,14 +12,16 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 			targetDamage = .0f; 
 		}
 		this.health -= targetDamage;
+		print("Took Hit " + this.health);
 		if (this.health <= .0f) {
 			this.Die();
 		}
 	}
 	
 	private void Die() {
+		string tag = gameObject.tag;
 		gameObject.tag = "Dead";
-		BBEventController.SendPlayerDeathNotification();
+		BBEventController.SendDeathNotification(tag);
 		Destroy(gameObject);
 	}
 }

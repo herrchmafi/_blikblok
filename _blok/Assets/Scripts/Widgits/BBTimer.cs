@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class BBTimer  {
-	//Timer must be instantiated and update in another script that inherits from MonoDevelop (for intended behavior at least)
+	//To use:
+	//Instantiate timer, call on start function, update in Update()
 	private bool isTiming = false;
 	public bool IsTiming {
 		get { return this.isTiming; }
-		set { this.isTiming = value; }
 	}
 	
 	private float seconds = .0f;

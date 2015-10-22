@@ -4,29 +4,46 @@ using System.Collections;
 public class BBGameController : MonoBehaviour {
 	[Range(0, 3)]
 	public int mainPlayerNumber;
+	
 	private GameObject[] players;
 	public GameObject[] Players {
 		get { return this.players; }
 	}
+
 	private GameObject mainPlayer;
 	public GameObject MainPlayer {
 		get { return this.mainPlayer; }
 	}
-	
+
 	private BBPlayerCameraController playerCameraController;
+	
+	private GameObject[] enemies;
+	public GameObject[] Enemies {
+		get { return this.enemies; }
+	}
+	
+	private GameObject[] allies;
+	public GameObject[] Allies {
+		get { return this.allies; }
+	}
 
 	// Use this for initialization
 	void Start () {
-		this.playerCameraController =  Camera.main.GetComponent<BBPlayerCameraController>();
-		this.players = GameObject.FindGameObjectsWithTag("Player");
+		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
+		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
+		
+		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
+		
+		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
+		
+		
 		foreach (GameObject player in this.players) {
-			if (player.GetComponent<BBPlayer>().playerNumber == this.mainPlayerNumber) {
+			if (player.GetComponent<BBBasePlayerController>().playerNumber == this.mainPlayerNumber) {
 				this.mainPlayer = player;
 				this.playerCameraController.SetTargetPlayer(player);
 				break;
 			}
 		}
-		
 	}
 	
 	// Update is called once per frame
@@ -36,6 +53,8 @@ public class BBGameController : MonoBehaviour {
 	
 	void OnEnable() {
 		BBEventController.OnPlayerDeath += UpdatePlayers;
+		BBEventController.OnEnemyDeath += UpdateEnemies;
+		BBEventController.OnAllyDeath += UpdateAllies;
 		
 	}
 	
@@ -44,7 +63,7 @@ public class BBGameController : MonoBehaviour {
 	}
 	
 	private void UpdatePlayers() {
-		this.players = GameObject.FindGameObjectsWithTag("Player");
+		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		if (this.players.Length == 0) {
 			print("Everybody is dead!");
 			return;
@@ -54,4 +73,25 @@ public class BBGameController : MonoBehaviour {
 			this.playerCameraController.SetTargetPlayer(this.mainPlayer);
 		}
 	}
+	
+	private void UpdateEnemies() {
+		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
+		if (this.enemies.Length == 0) {
+			print("All enemies are dead!");
+			return;
+		}
+	}
+	
+	private void UpdateAllies() {
+		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
+		if (this.allies.Length == 0) {
+			print("All allies are dead!");
+			return;
+		}
+	}
+	
+	
+	
+	
+	
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BBTurret : MonoBehaviour {
+public class BBTurret : BBLivingEntity {
 	enum State {
 		SPAWNING,
 		LOADING,
@@ -28,13 +28,12 @@ public class BBTurret : MonoBehaviour {
 	
 	private Quaternion prevRotation;
 	private Quaternion targetRotation;
-	private BBTimer timer;
+	private BBTimer timer = new BBTimer();
 	
 	// Use this for initialization
 	void Start () {
 		this.DetermineRotations();
 		this.currentState = State.ROTATING;
-		this.timer = new BBTimer();
 		this.timer.Start();
 	}
 	

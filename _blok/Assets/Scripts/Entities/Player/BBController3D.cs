@@ -31,7 +31,7 @@ public class BBController3D : RaycastController {
 		this.collisionInfo.faceDir = 1;
 	}
 	
-	public void Move(Vector3 distVect, Vector2 playerInput) {
+	public void Move(Vector3 distVect) {
 		this.playerInput = playerInput;
 		
 		this.UpdateRaycastOrigins ();
@@ -39,9 +39,15 @@ public class BBController3D : RaycastController {
 		if (distVect.x != 0) {
 			this.collisionInfo.faceDir = (int)Mathf.Sign(distVect.x);
 		}
-		
-		this.HandleHorizontalCollisions (ref distVect);
-		this.HandleVerticalCollisions (ref distVect);
+		if (Mathf.Abs(distVect.x) > 0) {
+			this.HandleHorizontalCollisions (ref distVect);
+		}
+		if (Mathf.Abs(distVect.y) > 0) {
+			this.HandleVerticalCollisions (ref distVect);
+		}
+		if (Mathf.Abs (distVect.x) > 0 && Mathf.Abs (distVect.y) > 0) {
+			this.HandleCornerCollisions(ref distVect);
+		}
 		this.HandleNormalCollisions (ref distVect);
 		transform.Translate(distVect);
 	}
@@ -64,9 +70,9 @@ public class BBController3D : RaycastController {
 		for (int i = 0; i < this.horizontalRayCount; i++) {
 			Vector3 rayOrigin = (dirX == -1) ? this.raycastOrigins.leftBottomFront : this.raycastOrigins.rightBottomFront;
 			rayOrigin += Vector3.forward * (horizontalRaySpacing * i);
+			//Shoots rays based on direction of X-movement. Will adjust according to where hits are detected
 			for (int j = 0; j < this.normalRayCount; j++) {
 				RaycastHit hit;
-				//Debug.DrawRay(rayOrigin, dirX * Vector3.right * rayLength, Color.red);
 				if (Physics.Raycast(rayOrigin, dirX * Vector3.right, out hit, rayLength, this.collisionMask)) {
 					if (hit.distance == 0) {
 						continue;
@@ -77,7 +83,7 @@ public class BBController3D : RaycastController {
 					this.collisionInfo.isLeft = dirX == -1;
 					this.collisionInfo.isRight = dirX == 1;
 				}
-				rayOrigin += Vector3.up * (normalRaySpacing);
+				rayOrigin += Vector3.up * this.normalRaySpacing;
 			}
 		}
 	}
@@ -85,13 +91,12 @@ public class BBController3D : RaycastController {
 	private void HandleVerticalCollisions (ref Vector3 distVect) {
 		float dirY = Mathf.Sign(distVect.y);
 		float rayLength = Mathf.Abs (distVect.y) + skinWidth;
-
+		//Shoots rays based on direction of y-movement. Will adjust according to where hits are detected
 		for (int i = 0; i < this.verticalRayCount ; i++) {
 			Vector3 rayOrigin = (dirY == -1) ? this.raycastOrigins.leftBottomFront : this.raycastOrigins.leftTopFront;
 			rayOrigin += Vector3.right * (this.verticalRaySpacing * i);
 			for (int j = 0; j < this.horizontalRayCount; j++) {
 				RaycastHit hit;
-				//Debug.DrawRay(rayOrigin, dirY * Vector3.up * rayLength, Color.red);
 				if (Physics.Raycast(rayOrigin, dirY * Vector3.up, out hit, rayLength, this.collisionMask)) {
 					if (hit.distance == 0) {
 						continue;
@@ -101,10 +106,44 @@ public class BBController3D : RaycastController {
 					
 					this.collisionInfo.isBottom = dirY == -1;
 					this.collisionInfo.isTop = dirY == 1;
+					
 				}
-				rayOrigin += Vector3.forward * horizontalRaySpacing;
+				rayOrigin += Vector3.forward * this.horizontalRaySpacing;
 
 			}
+		}
+	}
+	
+	private void HandleCornerCollisions(ref Vector3 distVect) {
+		float dirX = Mathf.Sign(distVect.x);
+		float dirY = Mathf.Sign(distVect.y);
+		float rayLength = BBMathHelper.PythagoreanLength(distVect.x, distVect.y) + skinWidth;
+		Vector3 rayOrigin;
+		if (distVect.x > 0) {
+			rayOrigin = (distVect.y > 0) ? this.raycastOrigins.rightTopFront : this.raycastOrigins.rightBottomFront;
+		} else {
+			rayOrigin = (distVect.y > 0) ? this.raycastOrigins.leftTopFront : this.raycastOrigins.leftBottomFront;
+		}
+		for (int i = 0; i < this.diagonalRayCount; i++) {
+			RaycastHit hit;
+			Debug.DrawRay(rayOrigin, new Vector3(distVect.x, distVect.y) * rayLength, Color.red);
+			if (Physics.Raycast(rayOrigin, new Vector3(distVect.x, distVect.y), out hit, rayLength, this.collisionMask)) {
+				if (hit.distance == 0) {
+					continue;
+				}
+				float dirAngle = BBMathHelper.TanAngle(distVect.x, distVect.y);
+				float xHit = hit.distance * Mathf.Sin(dirAngle);
+				float yHit = hit.distance * Mathf.Cos(dirAngle);
+				distVect.x = (xHit - skinWidth) * dirX;
+				distVect.y = (yHit - skinWidth) * dirY;
+				rayLength = hit.distance;
+				
+				this.collisionInfo.isLeft = dirX == -1;
+				this.collisionInfo.isRight = dirX == 1;
+				this.collisionInfo.isBottom = dirY == -1;
+				this.collisionInfo.isTop = dirY == 1;
+			}
+			rayOrigin += Vector3.forward * this.diagonalRaySpacing;
 		}
 	}
 	
@@ -117,7 +156,7 @@ public class BBController3D : RaycastController {
 			rayOrigin += Vector3.up * (this.normalRaySpacing * i);
 			for (int j = 0; j < this.verticalRayCount; j++) {
 				RaycastHit hit;
-				Debug.DrawRay(rayOrigin, dirZ * Vector3.forward * rayLength, Color.red);
+				//Debug.DrawRay(rayOrigin, dirZ * Vector3.forward * rayLength, Color.red);
 				if (Physics.Raycast(rayOrigin, dirZ * Vector3.forward, out hit, rayLength, this.collisionMask)) {
 					if (hit.distance == 0) {
 						continue;
@@ -132,15 +171,4 @@ public class BBController3D : RaycastController {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

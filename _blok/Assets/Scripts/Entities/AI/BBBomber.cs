@@ -19,7 +19,8 @@ public class BBBomber : BBLivingEntity {
 	int currentWaypoint;
 	
 	// Use this for initialization
-	void Start () {
+	public override void Start () {
+		base.Start();
 		this.gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<BBGameController>();
 		transform.GetComponent<BoxCollider>().center = BBSceneConstants.AStarColliderCenter;
 

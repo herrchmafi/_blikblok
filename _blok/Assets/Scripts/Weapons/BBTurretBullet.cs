@@ -18,11 +18,12 @@ public class BBTurretBullet : BBWeapon {
 		if (BBUnityComponentsHelper.IsInLayerMask(collision.gameObject, this.reflectLayerMask)) {
 			this.bounces++;
 		} else {
+			print(collision.gameObject.tag);
 			BBIDamageable damageableObject = collision.gameObject.GetComponent<BBIDamageable>();
 			if (damageableObject != null) {
-				damageableObject.TakeHit(this.power, collision);
+				damageableObject.TakeHit(this.power, GetComponent<Collider>());
+				Destroy(gameObject);
 			}
-			Destroy(gameObject);
 		}
 		 if (this.bounces == this.bouncesUntilExplosion) {
 			Destroy(gameObject);

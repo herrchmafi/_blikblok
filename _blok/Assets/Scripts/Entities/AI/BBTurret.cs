@@ -31,7 +31,8 @@ public class BBTurret : BBLivingEntity {
 	private BBTimer timer = new BBTimer();
 	
 	// Use this for initialization
-	void Start () {
+	public override void Start () {
+		base.Start();
 		this.DetermineRotations();
 		this.currentState = State.ROTATING;
 		this.timer.Start();
@@ -99,5 +100,18 @@ public class BBTurret : BBLivingEntity {
 		bulletObject.GetComponent<BBTurretBullet>().FireInDir(transform.up);
 		this.currentState = State.ATTACKING;
 		this.currentShot++;
+	}
+	
+	void OnTriggerEnter(Collider collider) {
+		BBIDamageable damageableObject = collider.gameObject.GetComponent<BBIDamageable>();
+		if (damageableObject != null) {
+			//Knockback
+			if (collider.gameObject.tag.Equals(BBSceneConstants.actionPlayerTag)){
+				GameObject actionPlayerObject = collider.gameObject;
+				Vector3 tempForceDir = actionPlayerObject.transform.position - transform.position;
+				Vector3 forceDirNormalized = Vector3.Normalize(new Vector3(tempForceDir.x, tempForceDir.y, .0f));
+				damageableObject.TakeHit(BBEntityConstants.defaultKnockbackDamage, GetComponent<Collider>(), new BBKnockback(BBEntityConstants.defaultKnockbackMagnitude, BBEntityConstants.defaultKnockbackTime, forceDirNormalized));
+			}
+		}
 	}
 }

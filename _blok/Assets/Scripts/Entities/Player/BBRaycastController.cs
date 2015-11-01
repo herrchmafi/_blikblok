@@ -9,10 +9,12 @@ public class RaycastController : MonoBehaviour {
 	protected const float skinWidth = .015f;
 	public int horizontalRayCount;
 	public int verticalRayCount;
+	public int diagonalRayCount;
 	public int normalRayCount;
 	
 	protected float horizontalRaySpacing;
 	protected float verticalRaySpacing;
+	protected float diagonalRaySpacing;
 	protected float normalRaySpacing;
 	
 	public BoxCollider boxCollider;
@@ -51,6 +53,7 @@ public class RaycastController : MonoBehaviour {
 		this.horizontalRaySpacing = bounds.size.z / (this.horizontalRayCount - 1);
 		this.verticalRaySpacing = bounds.size.x / (this.verticalRayCount - 1);
 		this.normalRaySpacing = bounds.size.y / (this.normalRayCount - 1);
+		this.diagonalRaySpacing = bounds.size.z / (this.diagonalRayCount - 1);
 	}
 	
 	protected struct RaycastOrigins {

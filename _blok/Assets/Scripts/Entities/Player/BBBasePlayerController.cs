@@ -55,7 +55,7 @@ public class BBBasePlayerController : MonoBehaviour {
 		}
 		
 		this.velocityVect.z += this.gravity * Time.deltaTime;
-		this.controller.Move(this.velocityVect * Time.deltaTime, input);
+		this.controller.Move(this.velocityVect * Time.deltaTime);
 		if (this.controller.CollInfo.isBack) {
 			this.velocityVect.z = .0f;
 		}
@@ -72,9 +72,5 @@ public class BBBasePlayerController : MonoBehaviour {
 		if (Input.GetButtonDown("NormalAttack")) {
 			this.actionPlayerController.NormalAttack();
 		}
-	}
-	
-	void OnCollisionEnter(Collision collision) {
-
 	}
 }

@@ -25,42 +25,41 @@ public class BBMelee : BBWeapon {
 	
 	private HashSet<GameObject> attackedObjects;
 	
-	private BoxCollider collider;
+	private BoxCollider boxCollider;
 	// Use this for initialization
 	void Start () {
-		this.collider = transform.GetComponent<BoxCollider>();
-		this.collider.enabled = false;
+		this.boxCollider = transform.GetComponent<BoxCollider>();
+		this.boxCollider.enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		this.timer.Update();
 		if (this.isAttacking) {
-			this.collider.enabled = this.isAttacking;
+			this.boxCollider.enabled = this.isAttacking;
 			if (this.timer.Seconds >= this.attackDuration) {
 				this.ResetAttack();
 			}
 		}
 	}
 	
-	void OnCollisionEnter(Collision collision) {
-		print("Collision");
-		if (collision.gameObject == transform.parent.parent || !this.isAttacking) {
+	void OnTriggerEnter(Collider collider) {
+		GameObject attackedObject = collider.gameObject;
+		//Do not attack parent
+		if (collider.gameObject.Equals(transform.parent.gameObject) || !this.isAttacking) {
 			return;
 		}
-		GameObject attackedObject = collision.gameObject;
 		BBIDamageable damageableObject = attackedObject.GetComponent<BBIDamageable>();
 
 		if (damageableObject != null && !this.attackedObjects.Contains(attackedObject)) {
-			damageableObject.TakeHit(this.power, collision);
+			damageableObject.TakeHit(this.power, collider);
 			print("Hit you");
 			this.attackedObjects.Add(attackedObject);
 		}
 	}
-	
 	private void ResetAttack() {
 		this.isAttacking = false;
-		this.collider.enabled = this.isAttacking;
+		this.boxCollider.enabled = this.isAttacking;
 		this.timer.Stop();
 		this.attackedObjects = null;
 	}

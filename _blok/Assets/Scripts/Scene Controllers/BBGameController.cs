@@ -14,7 +14,9 @@ public class BBGameController : MonoBehaviour {
 	public GameObject MainPlayer {
 		get { return this.mainPlayer; }
 	}
-
+	
+	private BBSpriteFactory spriteFactory;
+	
 	private BBPlayerCameraController playerCameraController;
 	
 	private GameObject[] enemies;
@@ -29,6 +31,8 @@ public class BBGameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		this.spriteFactory = transform.GetComponent<BBSpriteFactory>();
+		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.ground));
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
 		

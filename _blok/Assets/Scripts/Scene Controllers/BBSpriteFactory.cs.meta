@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 92e04ec67c70fec489d661b0cef171bb
+timeCreated: 1445821941
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - basePlayerFab: {fileID: 483054, guid: d3ca7dcb2b88448488c6ed28e7083040, type: 2}
+  - actionPlayerFab: {fileID: 440576, guid: 4d0047533d988c7488aebfb51ced7afb, type: 2}
+  - animationPlayerFab: {fileID: 442100, guid: be1a5cfac3809b44c8a1313b92a99d84, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

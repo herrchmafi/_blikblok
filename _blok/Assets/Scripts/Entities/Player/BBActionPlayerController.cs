@@ -20,9 +20,9 @@ public class BBActionPlayerController : BBLivingEntity {
 	
 	private BBAnimatedPlayer animatedPlayer;
 	
-	
 	// Use this for initialization
-	void Start () {
+	public override void Start () {
+		base.Start();
 		this.currentState = State.IDLE;
 		this.meleeFabLocal = (Transform)Instantiate(this.meleeFab, transform.position, transform.rotation);
 		this.meleeFabLocal.parent = transform;
@@ -32,7 +32,7 @@ public class BBActionPlayerController : BBLivingEntity {
 	
 	// Update is called once per frame
 	void Update () {
-
+		base.Update();
 	}
 	
 	public void Idle() {

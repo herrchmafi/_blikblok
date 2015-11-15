@@ -31,7 +31,7 @@ public class BBActionPlayerController : BBLivingEntity {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public override void Update () {
 		base.Update();
 	}
 	

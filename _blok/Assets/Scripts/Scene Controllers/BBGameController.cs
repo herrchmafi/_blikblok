@@ -32,7 +32,7 @@ public class BBGameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		this.spriteFactory = transform.GetComponent<BBSpriteFactory>();
-		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.ground));
+		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.collidedGround - 10));
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
 		
@@ -69,7 +69,6 @@ public class BBGameController : MonoBehaviour {
 	private void UpdatePlayers() {
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		if (this.players.Length == 0) {
-			print("Everybody is dead!");
 			return;
 		}
 		if (this.mainPlayer.tag.Equals("Dead")) {
@@ -81,7 +80,6 @@ public class BBGameController : MonoBehaviour {
 	private void UpdateEnemies() {
 		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
 		if (this.enemies.Length == 0) {
-			print("All enemies are dead!");
 			return;
 		}
 	}
@@ -89,7 +87,6 @@ public class BBGameController : MonoBehaviour {
 	private void UpdateAllies() {
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
 		if (this.allies.Length == 0) {
-			print("All allies are dead!");
 			return;
 		}
 	}

@@ -39,7 +39,8 @@ public class BBTurret : BBLivingEntity {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public override void Update () {
+		base.Update();
 		this.timer.Update();
 		
 		//State Logic
@@ -96,8 +97,8 @@ public class BBTurret : BBLivingEntity {
 	
 	private void Fire() {
 		this.timer.Stop();
-		GameObject bulletObject = (GameObject) Instantiate(this.bullet, transform.position + transform.up, transform.rotation);
-		bulletObject.GetComponent<BBTurretBullet>().FireInDir(transform.up);
+		GameObject bulletObject = (GameObject) Instantiate(this.bullet, transform.position + transform.up, Quaternion.identity);
+		bulletObject.GetComponent<BBBounceBullet>().FireInDir(transform.up);
 		this.currentState = State.ATTACKING;
 		this.currentShot++;
 	}
@@ -106,6 +107,7 @@ public class BBTurret : BBLivingEntity {
 		BBIDamageable damageableObject = collider.gameObject.GetComponent<BBIDamageable>();
 		if (damageableObject != null) {
 			//Knockback
+			print("Player");
 			if (collider.gameObject.tag.Equals(BBSceneConstants.actionPlayerTag)){
 				GameObject actionPlayerObject = collider.gameObject;
 				Vector3 tempForceDir = actionPlayerObject.transform.position - transform.position;

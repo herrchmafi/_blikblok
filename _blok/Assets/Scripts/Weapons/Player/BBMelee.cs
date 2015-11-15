@@ -10,7 +10,6 @@ public class BBMelee : BBWeapon {
 			this.isAttacking = value;
 			if (this.isAttacking) {
 				if (!this.timer.IsTiming) {
-					print("Attack");
 					this.timer.Start();
 					this.attackedObjects = new HashSet<GameObject>();
 				}
@@ -28,7 +27,7 @@ public class BBMelee : BBWeapon {
 	private BoxCollider boxCollider;
 	// Use this for initialization
 	void Start () {
-		this.boxCollider = transform.GetComponent<BoxCollider>();
+		this.boxCollider = GetComponent<BoxCollider>();
 		this.boxCollider.enabled = false;
 	}
 	
@@ -50,10 +49,10 @@ public class BBMelee : BBWeapon {
 			return;
 		}
 		BBIDamageable damageableObject = attackedObject.GetComponent<BBIDamageable>();
-
 		if (damageableObject != null && !this.attackedObjects.Contains(attackedObject)) {
-			damageableObject.TakeHit(this.power, collider);
-			print("Hit you");
+			Vector3 tempForceDir = attackedObject.transform.position - transform.parent.position;
+			Vector3 forceDirNormalized = Vector3.Normalize(new Vector3(tempForceDir.x, tempForceDir.y, .0f));
+			damageableObject.TakeHit(this.power, GetComponent<Collider>(), new BBKnockback(BBEntityConstants.defaultKnockbackMagnitude, BBEntityConstants.defaultKnockbackTime, forceDirNormalized));
 			this.attackedObjects.Add(attackedObject);
 		}
 	}

@@ -14,9 +14,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	public virtual void Start() {
 		this.damageSpeech = transform.GetComponent<BBDamageSpeech>();
-		if (gameObject.tag.Equals(BBSceneConstants.actionPlayerTag)) {
-			this.controller = gameObject.GetComponentInParent<BBController3D>();
-		}
+		this.controller = (transform.parent != null) ? gameObject.GetComponentInParent<BBController3D>() : gameObject.GetComponent<BBController3D>();
 	}
 	
 	public virtual void Update() {
@@ -84,6 +82,10 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		gameObject.tag = "Dead";
 		//Notification sent notifying of death. GameController will handle the updates
 		BBEventController.SendDeathNotification(tag);
-		Destroy(transform.parent.gameObject);
+		if (transform.parent != null) {
+			Destroy(transform.parent.gameObject);
+		} else {
+			Destroy(gameObject);
+		}
 	}
 }

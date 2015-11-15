@@ -36,7 +36,8 @@ public class BBBomber : BBLivingEntity {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	public override void Update () {
+		base.Update();
 		this.targetTimer.Update();
 		if (this.targetTimer.Seconds >= this.updateTime) {
 			this.targetTimer.Reset();

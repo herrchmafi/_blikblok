@@ -4,10 +4,12 @@ using System.Collections;
 public class BBSpriteFactory : MonoBehaviour {
 	public Transform basePlayerFab;
 	public Transform turretFab;
+	public Transform dummyFab;
 
 	public enum Sprite {
 		PLAYER,
-		TURRET
+		TURRET,
+		DUMMY
 	}
 	
 	public void CreateSprite(Sprite sprite, Vector3 position) {
@@ -18,6 +20,9 @@ public class BBSpriteFactory : MonoBehaviour {
 				break;
 			case Sprite.TURRET:
 				Instantiate(this.turretFab, position, Quaternion.identity);
+				break;
+			case Sprite.DUMMY:
+				Instantiate(this.dummyFab, position, Quaternion.identity);
 				break;
 		}
 	}

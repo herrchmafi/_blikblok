@@ -106,8 +106,6 @@ public class BBTurret : BBLivingEntity {
 	void OnTriggerEnter(Collider collider) {
 		BBIDamageable damageableObject = collider.gameObject.GetComponent<BBIDamageable>();
 		if (damageableObject != null) {
-			//Knockback
-			print("Player");
 			if (collider.gameObject.tag.Equals(BBSceneConstants.actionPlayerTag)){
 				GameObject actionPlayerObject = collider.gameObject;
 				Vector3 tempForceDir = actionPlayerObject.transform.position - transform.position;

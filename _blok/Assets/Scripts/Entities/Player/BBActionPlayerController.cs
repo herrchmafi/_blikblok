@@ -26,7 +26,7 @@ public class BBActionPlayerController : BBLivingEntity {
 		this.currentState = State.IDLE;
 		this.meleeFabLocal = (Transform)Instantiate(this.meleeFab, transform.position, transform.rotation);
 		this.meleeFabLocal.parent = transform;
-		this.meleeFabLocal.localPosition += Vector3.down;
+		this.meleeFabLocal.localPosition += Vector3.up;
 		this.animatedPlayer = transform.FindChild(BBSceneConstants.animatedPlayer).GetComponent<BBAnimatedPlayer>();
 	}
 	

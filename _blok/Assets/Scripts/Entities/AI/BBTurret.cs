@@ -13,7 +13,7 @@ public class BBTurret : BBLivingEntity {
 	[SerializeField]
 	private State currentState;
 	
-	public GameObject bullet;
+	public GameObject bulletFab;
 	
 	public int rotations = 4;
 	public int currentRotation = 1;
@@ -97,7 +97,7 @@ public class BBTurret : BBLivingEntity {
 	
 	private void Fire() {
 		this.timer.Stop();
-		GameObject bulletObject = (GameObject) Instantiate(this.bullet, transform.position + transform.up, Quaternion.identity);
+		GameObject bulletObject = (GameObject) Instantiate(this.bulletFab, transform.position + transform.up, Quaternion.identity);
 		bulletObject.GetComponent<BBBounceBullet>().FireInDir(transform.up);
 		this.currentState = State.ATTACKING;
 		this.currentShot++;

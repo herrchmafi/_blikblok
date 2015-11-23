@@ -12,6 +12,8 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	private BBKnockback knockback;
 	
+	public Transform hitFab;
+	
 	public virtual void Start() {
 		this.damageSpeech = transform.GetComponent<BBDamageSpeech>();
 		this.controller = (transform.parent != null) ? gameObject.GetComponentInParent<BBController3D>() : gameObject.GetComponent<BBController3D>();
@@ -34,6 +36,8 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		if (this.health <= .0f) {
 			this.Die();
 		}
+		Transform hitTransform = (Transform)Instantiate(this.hitFab, transform.position, transform.rotation);
+		hitTransform.parent = transform;
 	}
 	
 	//Take hit without knockback using OnTrigger events with knockback
@@ -41,27 +45,6 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		this.TakeHit(power, collider);
 		if (this.controller != null) {
 			this.knockback = knockback;
-			this.knockback.Timer.Start();
-		}
-	}
-	
-	//Take hit without knockback using Unity's default physics
-	public void TakeHit(float power, Collision collision) {
-		float targetDamage = power - this.defense;
-		this.damageSpeech.TakeHit(targetDamage);
-		if (targetDamage < .0f) {
-			targetDamage = .0f; 
-		}
-		this.health -= targetDamage;
-		if (this.health <= .0f) {
-			this.Die();
-		}
-	}
-	
-	public void TakeHit(float power, Collision collision, BBKnockback knockback) {
-		this.TakeHit(power, collision);
-		if (this.controller != null) {
-			this.knockback = knockback;;
 			this.knockback.Timer.Start();
 		}
 	}
@@ -79,7 +62,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	//Call when health is below 0 (or equal)
 	private void Die() {
 		string tag = gameObject.tag;
-		gameObject.tag = "Dead";
+		gameObject.tag = BBSceneConstants.deadTag;
 		//Notification sent notifying of death. GameController will handle the updates
 		BBEventController.SendDeathNotification(tag);
 		if (transform.parent != null) {

@@ -4,5 +4,5 @@ using System.Collections;
 public class BBPhysicsConstants {
 	public const float degreesPerRevolution = 360.0f;
 	public const float radiansPerRevolution = 2 * (float)Mathf.PI;
-	public const float dirOffset = 90.0f;
+	public const float dirOffset = 270.0f;
 }

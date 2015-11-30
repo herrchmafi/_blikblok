@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class BBLivingEntity : MonoBehaviour, BBIDamageable {
-	
 	public float health = 100.0f;
 	public float defense;
 	
@@ -12,11 +11,12 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	private BBKnockback knockback;
 	
-	public Transform hitFab;
+	private BBAnimatedEntity animatedEntity;
 	
 	public virtual void Start() {
 		this.damageSpeech = transform.GetComponent<BBDamageSpeech>();
 		this.controller = (transform.parent != null) ? gameObject.GetComponentInParent<BBController3D>() : gameObject.GetComponent<BBController3D>();
+		this.animatedEntity = transform.FindChild(BBSceneConstants.animatedEntity).GetComponent<BBAnimatedEntity>();
 	}
 	
 	public virtual void Update() {
@@ -27,6 +27,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	//Take hit without knockback using OnTrigger events w/o knockback
 	public void TakeHit(float power, Collider collider) {
+		this.animatedEntity.TakeHit();
 		float targetDamage = power - this.defense;
 		this.damageSpeech.TakeHit(targetDamage);
 		if (targetDamage < .0f) {
@@ -36,8 +37,6 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		if (this.health <= .0f) {
 			this.Die();
 		}
-		Transform hitTransform = (Transform)Instantiate(this.hitFab, transform.position, transform.rotation);
-		hitTransform.parent = transform;
 	}
 	
 	//Take hit without knockback using OnTrigger events with knockback

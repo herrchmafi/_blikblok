@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class BBActionPlayerController : BBLivingEntity {
@@ -18,7 +18,7 @@ public class BBActionPlayerController : BBLivingEntity {
 	public Transform meleeFab;
 	private Transform meleeFabLocal;
 	
-	private BBAnimatedPlayer animatedPlayer;
+	private BBAnimatedEntity animatedPlayer;
 	
 	// Use this for initialization
 	public override void Start () {
@@ -27,7 +27,7 @@ public class BBActionPlayerController : BBLivingEntity {
 		this.meleeFabLocal = (Transform)Instantiate(this.meleeFab, transform.position, transform.rotation);
 		this.meleeFabLocal.parent = transform;
 		this.meleeFabLocal.localPosition += Vector3.up;
-		this.animatedPlayer = transform.FindChild(BBSceneConstants.animatedPlayer).GetComponent<BBAnimatedPlayer>();
+		this.animatedPlayer = transform.FindChild(BBSceneConstants.animatedEntity).GetComponent<BBAnimatedEntity>();
 	}
 	
 	// Update is called once per frame

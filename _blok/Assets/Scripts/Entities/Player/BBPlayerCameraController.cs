@@ -10,6 +10,7 @@ public class BBPlayerCameraController : MonoBehaviour {
 	public float expandFactor = 2.2f;
 	
 	private GameObject targetPlayer;
+	private BBBasePlayerController targetPlayerBase;
 	private BBController3D targetController;
 	
 	private BBGameController gameController;
@@ -49,8 +50,8 @@ public class BBPlayerCameraController : MonoBehaviour {
 		Vector2 focusPosition = this.focusArea.center + Vector2.up * this.verticalOffset;
 		if (this.focusArea.velocity.x != 0) {
 			this.lookAheadDirX = Mathf.Sign(this.focusArea.velocity.x);
-			float inputX = this.targetController.PlayerInput.x;
-			if (Mathf.Sign(inputX) == Mathf.Sign(this.focusArea.velocity.x) && this.targetController.PlayerInput.x != 0) {
+			float inputX = this.targetPlayerBase.PlayerInput.x;
+			if (Mathf.Sign(inputX) == Mathf.Sign(this.focusArea.velocity.x) && this.targetPlayerBase.PlayerInput.x != 0) {
 				this.isLookAheadStopped = false;
 				this.targetLookAheadX = this.lookAheadDirX * this.lookAheadDistX;
 			} else {
@@ -75,14 +76,6 @@ public class BBPlayerCameraController : MonoBehaviour {
 				maxDist = currentDist;
 			}
 		}
-
-		//Adjust FOV accordingly from max distance found
-//		if (maxDist > this.expandDistThresholdFOV) {
-//			float fovBuffer = (maxDist - this.expandDistThresholdFOV) * this.expandFactor;
-//			Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, this.baseFOV + fovBuffer, ref this.expandFOVVelocity, this.expandTime);
-//		} else {
-//			Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, this.baseFOV, ref this.expandFOVVelocity, this.expandTime);
-//		}
 		
 		float cameraDistBuffer = (maxDist > this.expandDistThreshold) ? (maxDist - this.expandDistThreshold) * this.expandFactor : .0f;
 		float targetZ = Mathf.SmoothDamp(transform.position.z, this.baseCameraDist - cameraDistBuffer, ref this.expandZVelocity, this.expandTime); 
@@ -98,6 +91,7 @@ public class BBPlayerCameraController : MonoBehaviour {
 		this.targetPlayer = targetPlayer;
 		//Create array of non-main player objects
 		this.targetController = this.targetPlayer.GetComponent<BBController3D>();
+		this.targetPlayerBase = this.targetPlayer.GetComponent<BBBasePlayerController>();
 		this.focusArea = new FocusArea(this.targetController.boxCollider.bounds, this.focusDimensions);
 	}
 	

@@ -8,10 +8,6 @@ public class BBController3D : RaycastController {
 		get { return this.collisionInfo; }
 	}
 	
-	private Vector2 playerInput;
-	public Vector2 PlayerInput {
-		get { return this.playerInput; }
-	}
 	public struct CollisionInfo {
 		public bool isLeft, isRight;
 		public bool isTop, isBottom;
@@ -31,9 +27,7 @@ public class BBController3D : RaycastController {
 		this.collisionInfo.faceDir = 1;
 	}
 	
-	public void Move(Vector3 distVect) {
-		this.playerInput = playerInput;
-		
+	public void Move(Vector3 distVect) {		
 		this.UpdateRaycastOrigins ();
 		this.collisionInfo.Reset ();
 		if (distVect.x != 0) {

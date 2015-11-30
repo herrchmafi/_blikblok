@@ -22,7 +22,10 @@ public class BBBasePlayerController : MonoBehaviour {
 
 	private BBController3D controller;
 	
-	private BBGameController gameController;
+	private Vector2 playerInput;
+	public Vector2 PlayerInput {
+		get { return this.playerInput; }
+	}
 	
 	private BBActionPlayerController actionPlayerController;
 	
@@ -31,23 +34,22 @@ public class BBBasePlayerController : MonoBehaviour {
 		this.gravity = BBPhysicsHelper.ObjectGravity(this.jumpHeight, this.timeToJumpApex);
 		this.jumpVelocity = BBPhysicsHelper.JumpVelocity(this.gravity, this.timeToJumpApex);
 		this.controller = gameObject.GetComponent<BBController3D>();
-		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
-		this.actionPlayerController = transform.Find(BBSceneConstants.actionPlayer).GetComponent<BBActionPlayerController>();
+		this.actionPlayerController = transform.Find(BBSceneConstants.actionEntity).GetComponent<BBActionPlayerController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Vector2 input = new Vector2(Input.GetAxisRaw ("Horizontal" + playerNumber), Input.GetAxisRaw ("Vertical" + playerNumber));
-		Vector3 targetVelocityXY = new Vector3(input.x * this.maxSpeed, input.y * this.maxSpeed);
+		this.playerInput = new Vector2(Input.GetAxisRaw (BBSceneConstants.horizontalInput + playerNumber), Input.GetAxisRaw (BBSceneConstants.verticalInput + playerNumber));
+		Vector3 targetVelocityXY = new Vector3(this.playerInput.x * this.maxSpeed, this.playerInput.y * this.maxSpeed);
 		this.velocityVect.x = Mathf.SmoothDamp(this.velocityVect.x, targetVelocityXY.x, ref this.velocityXSmoothing, this.accelerationTime);
 		this.velocityVect.y = Mathf.SmoothDamp(this.velocityVect.y, targetVelocityXY.y, ref this.velocityYSmoothing, this.accelerationTime); 
 		
 		//Jumping Logic
 		if (this.controller.CollInfo.isBack) {
-			if (Input.GetButtonDown("Jump" + this.playerNumber)) {
+			if (Input.GetButtonDown(BBSceneConstants.jumpInput + this.playerNumber)) {
 				this.actionPlayerController.Jump();
 				this.velocityVect.z = this.jumpVelocity;
-			} else if ((Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0)) {
+			} else if ((Mathf.Abs(this.playerInput.x) > 0 || Mathf.Abs(this.playerInput.y) > 0)) {
 				this.actionPlayerController.Walk();
 			} else {
 				this.actionPlayerController.Idle();
@@ -69,7 +71,7 @@ public class BBBasePlayerController : MonoBehaviour {
 		this.actionPlayerController.Look(new Vector3(0, 0, angleBetweenPosAndMouse));
 		
 		//Player input
-		if (Input.GetButtonDown("NormalAttack")) {
+		if (Input.GetButtonDown(BBSceneConstants.normalAttackInput)) {
 			this.actionPlayerController.NormalAttack();
 		}
 	}

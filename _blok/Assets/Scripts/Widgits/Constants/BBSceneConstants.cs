@@ -15,8 +15,14 @@ public class BBSceneConstants {
 	public const string platformsTag = "Platforms";
 	
 	//Names used within game object hierarchy (i.e. parents, chidren)
-	public const string actionPlayer = "Action Player";
-	public const string animatedPlayer = "Animated Player";
+	public const string actionEntity = "Action Entity";
+	public const string animatedEntity = "Animated Entity";
+	
+	//Input Elements
+	public const string horizontalInput = "Horizontal";
+	public const string verticalInput = "Vertical";
+	public const string jumpInput = "Jump";
+	public const string normalAttackInput = "NormalAttack";
 	
 	//ground is where the ground objects are spawned, collidedGround refers to where colliders hit, sprite ground is where the image is to work visually
 	public const float collidedGround = -1.0f;

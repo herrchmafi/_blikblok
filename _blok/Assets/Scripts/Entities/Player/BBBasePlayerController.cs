@@ -39,6 +39,7 @@ public class BBBasePlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (tag.Equals(BBSceneConstants.deadTag)) { return; }
 		this.playerInput = new Vector2(Input.GetAxisRaw (BBSceneConstants.horizontalInput + playerNumber), Input.GetAxisRaw (BBSceneConstants.verticalInput + playerNumber));
 		Vector3 targetVelocityXY = new Vector3(this.playerInput.x * this.maxSpeed, this.playerInput.y * this.maxSpeed);
 		this.velocityVect.x = Mathf.SmoothDamp(this.velocityVect.x, targetVelocityXY.x, ref this.velocityXSmoothing, this.accelerationTime);

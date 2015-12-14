@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public class BBActionPlayerController : BBLivingEntity {
-
 	public enum State {
 		SPAWNING = 0,
 		IDLE = 1,

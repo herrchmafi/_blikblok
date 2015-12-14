@@ -23,4 +23,11 @@ public class BBAnimated : MonoBehaviour {
 		this.animator.SetInteger(BBAnimatorConstants.StateParam, (int)state);
 	}
 	
+	public void SetAnimationTrigger(string trigger) {
+		if (this.animator == null) {
+			this.animator = gameObject.GetComponent<Animator>();
+		}
+		this.animator.SetTrigger(trigger);
+	}
+	
 }

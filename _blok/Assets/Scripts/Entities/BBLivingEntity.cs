@@ -37,6 +37,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		if (this.health <= .0f) {
 			this.Die();
 		}
+		this.Die();
 	}
 	
 	//Take hit without knockback using OnTrigger events with knockback
@@ -62,12 +63,20 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	private void Die() {
 		string tag = gameObject.tag;
 		gameObject.tag = BBSceneConstants.deadTag;
-		//Notification sent notifying of death. GameController will handle the updates
+		if (transform.parent != null) {
+			transform.parent.gameObject.tag = BBSceneConstants.deadTag; 
+		}
 		BBEventController.SendDeathNotification(tag);
+		//Notification sent notifying of death. GameController will handle the updates
+		this.animatedEntity.Death();
+	}
+	
+	public void Destruction() {
 		if (transform.parent != null) {
 			Destroy(transform.parent.gameObject);
 		} else {
 			Destroy(gameObject);
 		}
 	}
+	
 }

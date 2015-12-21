@@ -20,7 +20,9 @@ public class BBAnimated : MonoBehaviour {
 	}
 	
 	public void SetAnimationState(BBActionPlayerController.State state) {
-		this.animator.SetInteger(BBAnimatorConstants.StateParam, (int)state);
+		if (this.animator != null) {
+			this.animator.SetInteger(BBAnimatorConstants.StateParam, (int)state);
+		}
 	}
 	
 	public void SetAnimationTrigger(string trigger) {

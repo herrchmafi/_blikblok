@@ -4,6 +4,7 @@ using System.Collections;
 //This class contains constants that are used within scenes
 public class BBSceneConstants {
 	//Scene Tags
+	public const string untaggedTag = "Untagged";
 	public const string playerTag = "Player";
 	public const string playersTag = "Players";
 	public const string actionPlayerTag = "ActionPlayer";

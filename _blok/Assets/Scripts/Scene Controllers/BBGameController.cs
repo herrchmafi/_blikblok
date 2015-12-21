@@ -32,22 +32,13 @@ public class BBGameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		this.spriteFactory = transform.GetComponent<BBSpriteFactory>();
-		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.collidedGround - 10));
+		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.collidedGround));
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
-		
+
 		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
-		
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
-		
-		
-		foreach (GameObject player in this.players) {
-			if (player.GetComponent<BBBasePlayerController>().playerNumber == this.mainPlayerNumber) {
-				this.mainPlayer = player;
-				this.playerCameraController.SetTargetPlayer(player);
-				break;
-			}
-		}
+
 	}
 	
 	// Update is called once per frame
@@ -60,6 +51,9 @@ public class BBGameController : MonoBehaviour {
 		BBEventController.OnEnemyDeath += UpdateEnemies;
 		BBEventController.OnAllyDeath += UpdateAllies;
 		
+		BBEventController.OnPlayerSpawn += UpdatePlayers;
+		BBEventController.OnEnemySpawn += UpdateEnemies;
+		BBEventController.OnAllySpawn += UpdateAllies;
 	}
 	
 	void OnDisable() {
@@ -71,7 +65,16 @@ public class BBGameController : MonoBehaviour {
 		if (this.players.Length == 0) {
 			return;
 		}
-		if (this.mainPlayer.tag.Equals("Dead")) {
+		//Sets camera target
+		foreach (GameObject player in this.players) {
+			if (player.GetComponent<BBBasePlayerController>().playerNumber == this.mainPlayerNumber) {
+				this.mainPlayer = player;
+				this.playerCameraController.SetTargetPlayer(player);
+				break;
+			}
+		}
+		//If the main player died, set a new camera target
+		if (this.mainPlayer.tag.Equals(BBSceneConstants.deadTag)) {
 			this.mainPlayer = this.players[0];
 			this.playerCameraController.SetTargetPlayer(this.mainPlayer);
 		}
@@ -90,9 +93,5 @@ public class BBGameController : MonoBehaviour {
 			return;
 		}
 	}
-	
-	
-	
-	
 	
 }

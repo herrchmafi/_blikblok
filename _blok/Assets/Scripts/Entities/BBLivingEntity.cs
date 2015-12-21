@@ -37,16 +37,16 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		if (this.health <= .0f) {
 			this.Die();
 		}
-		this.Die();
 	}
 	
 	//Take hit without knockback using OnTrigger events with knockback
 	public void TakeHit(float power, Collider collider, BBKnockback knockback) {
 		this.TakeHit(power, collider);
-		if (this.controller != null) {
+		if (this.controller != null && !gameObject.tag.Equals(BBSceneConstants.deadTag)) {
 			this.knockback = knockback;
 			this.knockback.Timer.Start();
 		}
+		this.Die();
 	}
 	
 	//Call when knockback isn't null from within update

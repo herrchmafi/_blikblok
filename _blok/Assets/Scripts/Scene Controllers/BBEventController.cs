@@ -17,4 +17,19 @@ public class BBEventController : MonoBehaviour {
 			OnAllyDeath();
 		}	
 	}
+	
+	public delegate void Spawn();
+	public static event Spawn OnPlayerSpawn;
+	public static event Spawn OnEnemySpawn;
+	public static event Spawn OnAllySpawn;
+	
+	public static void SendSpawnNotification (string tag) {
+		if (tag.Equals(BBSceneConstants.playerTag) && OnPlayerDeath != null) {
+			OnPlayerSpawn();
+		} else if (tag.Equals(BBSceneConstants.enemyTag) && OnEnemyDeath != null) {
+			OnEnemySpawn();
+		} else if (tag.Equals(BBSceneConstants.allyTag) && OnAllyDeath != null) {
+			OnAllySpawn();
+		}	 
+	}
 }

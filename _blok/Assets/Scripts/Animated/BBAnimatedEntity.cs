@@ -13,6 +13,8 @@ public class BBAnimatedEntity : BBAnimated {
 	
 	public Vector3 deathScaleVect;
 	public float deathShakeSeconds;
+	public float deathShakeMagnitude;
+	public float deathShakePeriod;
 	
 	private BBLivingEntity livingEntity;
 	
@@ -41,7 +43,8 @@ public class BBAnimatedEntity : BBAnimated {
 	
 	public void Death() {
 		this.transformer.Scale(this.deathScaleVect, this.deathShakeSeconds);
-		this.transformer.Shake(this.deathShakeSeconds, 1.0f, 1.0f);
+		this.transformer.Shake(this.deathShakeSeconds, this.deathShakeMagnitude, this.deathShakePeriod);
+		this.SetAnimationState(BBActionPlayerController.State.IDLE);
 		Transform deathTransform = (Transform)Instantiate(this.deathFab, transform.parent.position, transform.parent.rotation);
 		deathTransform.GetComponent<BBExplosion>().Explode(this.deathShakeSeconds);
 		deathTransform.parent = transform;

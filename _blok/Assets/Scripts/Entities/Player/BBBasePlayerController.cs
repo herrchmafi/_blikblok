@@ -35,6 +35,7 @@ public class BBBasePlayerController : MonoBehaviour {
 		this.jumpVelocity = BBPhysicsHelper.JumpVelocity(this.gravity, this.timeToJumpApex);
 		this.controller = gameObject.GetComponent<BBController3D>();
 		this.actionPlayerController = transform.Find(BBSceneConstants.actionEntity).GetComponent<BBActionPlayerController>();
+		transform.parent = GameObject.FindGameObjectWithTag(BBSceneConstants.playersTag).transform;
 	}
 	
 	// Update is called once per frame

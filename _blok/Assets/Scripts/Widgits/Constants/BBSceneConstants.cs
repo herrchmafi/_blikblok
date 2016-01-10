@@ -14,6 +14,7 @@ public class BBSceneConstants {
 	public const string deadTag = "Dead";
 	public const string damageTag = "Damage";
 	public const string platformsTag = "Platforms";
+	public const string astarTag = "Astar";
 	
 	//Names used within game object hierarchy (i.e. parents, chidren)
 	public const string actionEntity = "Action Entity";

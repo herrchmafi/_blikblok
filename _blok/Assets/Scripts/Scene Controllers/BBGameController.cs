@@ -16,8 +16,11 @@ public class BBGameController : MonoBehaviour {
 	}
 	
 	private BBSpriteFactory spriteFactory;
+	private BBPlatformerGenerator platformGenerator;
 	
 	private BBPlayerCameraController playerCameraController;
+	
+	private AstarPath astarPath;
 	
 	private GameObject[] enemies;
 	public GameObject[] Enemies {
@@ -28,18 +31,26 @@ public class BBGameController : MonoBehaviour {
 	public GameObject[] Allies {
 		get { return this.allies; }
 	}
-
+	
 	// Use this for initialization
 	void Start () {
+		this.platformGenerator = transform.GetComponent<BBPlatformerGenerator>();
 		this.spriteFactory = transform.GetComponent<BBSpriteFactory>();
+		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
+//		this.astarPath = GameObject.FindGameObjectWithTag(BBSceneConstants.astarTag).GetComponent<AstarPath>();
+		
+		this.platformGenerator.GenerateMap();
+		
 		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.collidedGround));
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
-		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
+		this.UpdatePlayers();
+//		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.BOMBER, new Vector3(.0f, 5.0f, BBSceneConstants.collidedGround));
 
 		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
-
+		
 	}
+	
 	
 	// Update is called once per frame
 	void Update () {

@@ -10,13 +10,15 @@ public class BBPlatformerGenerator : MonoBehaviour {
 	private GameObject platforms;
 	private GameObject ground;
 	
-	// Use this for initialization
-	void Start () {
+	void Awake() {
 		this.platforms = GameObject.FindGameObjectWithTag(BBSceneConstants.platformsTag);
 		this.ground = new GameObject();
 		this.ground.name = "Ground";
 		this.ground.transform.parent = this.platforms.transform;
-		this.GenerateMap();
+	}
+	
+	// Use this for initialization
+	void Start () {
 	}
 	
 	// Update is called once per frame

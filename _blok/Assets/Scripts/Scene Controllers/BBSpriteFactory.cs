@@ -5,12 +5,14 @@ public class BBSpriteFactory : MonoBehaviour {
 	public enum Sprite {
 		PLAYER,
 		TURRET,
+		BOMBER,
 		DUMMY,
 		NONE
 	}
 
 	public Transform playerSpawnFab;
 	public Transform turretSpawnFab;
+	public Transform bomberSpawnFab;
 	public Transform dummySpawnFab;
 	
 	public void CreateSprite(Sprite sprite, Vector3 position) {
@@ -21,6 +23,9 @@ public class BBSpriteFactory : MonoBehaviour {
 				break;
 			case Sprite.TURRET:
 				spawn = Instantiate(this.turretSpawnFab, position, Quaternion.identity) as Transform;
+				break;
+			case Sprite.BOMBER:
+				spawn = Instantiate(this.bomberSpawnFab, position, Quaternion.identity) as Transform;
 				break;
 			case Sprite.DUMMY:
 				spawn = Instantiate(this.dummySpawnFab, position, Quaternion.identity) as Transform;
@@ -39,6 +44,8 @@ public class BBSpriteFactory : MonoBehaviour {
 			case Sprite.PLAYER:
 				return BBSceneConstants.playerTag;
 			case Sprite.TURRET:
+				return BBSceneConstants.enemyTag;
+			case Sprite.BOMBER:
 				return BBSceneConstants.enemyTag;
 			case Sprite.DUMMY:
 				return BBSceneConstants.enemyTag;

@@ -46,7 +46,6 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 			this.knockback = knockback;
 			this.knockback.Timer.Start();
 		}
-		this.Die();
 	}
 	
 	//Call when knockback isn't null from within update

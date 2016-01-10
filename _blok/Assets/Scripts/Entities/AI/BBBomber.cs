@@ -21,14 +21,10 @@ public class BBBomber : BBLivingEntity {
 	// Use this for initialization
 	public override void Start () {
 		base.Start();
-		this.gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<BBGameController>();
+		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
 		transform.GetComponent<BoxCollider>().center = BBSceneConstants.AStarColliderCenter;
-
-		this.targetTransform = GameObject.FindGameObjectWithTag("Player").transform;
-		this.previousTargetPosition = this.targetTransform.position;
 		
 		this.seeker = gameObject.GetComponent<Seeker>();
-		this.seeker.StartPath(transform.position, this.targetTransform.position);
 		this.seeker.pathCallback += OnPathComplete;
 		
 		this.targetTimer = new BBTimer();
@@ -38,6 +34,12 @@ public class BBBomber : BBLivingEntity {
 	// Update is called once per frame
 	public override void Update () {
 		base.Update();
+		if (this.targetTransform == null && this.gameController.Players.Length > 0) {
+			int playerIndex = Random.Range(0, this.gameController.Players.Length);
+			this.targetTransform = this.gameController.Players[playerIndex].transform;
+			this.previousTargetPosition = this.targetTransform.position;
+			this.seeker.StartPath(transform.position, this.targetTransform.position);
+		}
 		this.targetTimer.Update();
 		if (this.targetTimer.Seconds >= this.updateTime) {
 			this.targetTimer.Reset();

@@ -784,7 +784,7 @@ public class AstarPath : MonoBehaviour {
 		}
 
 		if (active.logPathResults != PathLog.None && active.logPathResults != PathLog.OnlyErrors) {
-			Debug.Log (s);
+			//Debug.Log (s);
 		}
 	}
 
@@ -817,7 +817,7 @@ public class AstarPath : MonoBehaviour {
 		if (logPathResults == PathLog.InGame) {
 			inGameDebugPath = debug;
 		} else {
-			Debug.Log (debug);
+			//Debug.Log (debug);
 		}
 	}
 
@@ -2039,7 +2039,7 @@ Debug.Log ("Scanning... " + progress.description + " - " + (progress.progress*10
 
 		System.GC.Collect ();
 
-		AstarLog ("Scanning - Process took "+(lastScanTime*1000).ToString ("0")+" ms to complete");
+		//AstarLog ("Scanning - Process took "+(lastScanTime*1000).ToString ("0")+" ms to complete");
 	}
 
 #endregion

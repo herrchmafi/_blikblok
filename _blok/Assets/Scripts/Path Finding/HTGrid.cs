@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class HTGrid : MonoBehaviour {
+	
+	//Debug purposes
+	public bool onlyDisplayPathGizmos;
+
 	public LayerMask unwalkableMask;
 	public Vector2 gridWorldSize;
 	public float nodeRadius;
@@ -10,6 +14,10 @@ public class HTGrid : MonoBehaviour {
 	
 	private float nodeDiameter;
 	private HTVector2Int gridSize;
+	
+	public int MaxSize {
+		get { return this.gridSize.X * this.gridSize.Y; }
+	}
 	
 	void Start() {
 		this.nodeDiameter = this.nodeRadius * 2;
@@ -60,15 +68,25 @@ public class HTGrid : MonoBehaviour {
 	public List<HTNode> path;
 	void OnDrawGizmos() {
 		if (!Application.isPlaying) { return; }
-		Gizmos.DrawWireCube(transform.position, new Vector3(this.gridSize.X, this.gridSize.Y, 0));
-		if (this.grid != null) {
-			foreach (HTNode node in grid) {
-				Gizmos.color = (node.IsWalkable) ? Color.white : Color.red;
-				if (this.path != null && this.path.Contains(node)) {
+		
+		if (this.onlyDisplayPathGizmos) {
+			if (path != null) {
+				foreach (HTNode node in path) {
 					Gizmos.color = Color.black;
+					Gizmos.DrawCube(node.WorldPos, Vector3.one * (this.nodeDiameter -.1f));
 				}
-				Gizmos.DrawCube(node.WorldPos, Vector3.one * (this.nodeDiameter -.1f));
-				
+			}
+		} else {
+			Gizmos.DrawWireCube(transform.position, new Vector3(this.gridSize.X, this.gridSize.Y, 0));
+			if (this.grid != null) {
+				foreach (HTNode node in grid) {
+					Gizmos.color = (node.IsWalkable) ? Color.white : Color.red;
+					if (this.path != null && this.path.Contains(node)) {
+						Gizmos.color = Color.black;
+					}
+					Gizmos.DrawCube(node.WorldPos, Vector3.one * (this.nodeDiameter -.1f));
+					
+				}
 			}
 		}
 	}

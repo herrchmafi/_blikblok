@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class HTNode {
+public class HTNode : BBIHeapItem<HTNode> {
 	private bool isWalkable;
 	public bool IsWalkable {
 		get { return this.isWalkable; }
@@ -28,6 +28,12 @@ public class HTNode {
 		get { return this.gCost + this.hCost; }
 	}
 	
+	private int heapIndex;
+	public int HeapIndex {
+		get { return this.heapIndex; }
+		set { this.heapIndex = value; }
+	}
+	
 	private HTNode parent;
 	public HTNode Parent {
 		get { return this.parent; }
@@ -39,9 +45,18 @@ public class HTNode {
 		get { return this.coordinate; }
 	}
 	
+	public int CompareTo(HTNode compareNode) {
+		int compare = this.FCost.CompareTo(compareNode.FCost);
+		if (compare == 0) {
+			compare = hCost.CompareTo (compareNode.hCost);
+		}
+		return -compare;
+	}
+	
 	public HTNode (bool isWalkable, Vector3 worldPos, HTVector2Int coordinate) {
 		this.isWalkable = isWalkable;
 		this.worldPos = worldPos;
 		this.coordinate = coordinate;
 	}
+	
 }

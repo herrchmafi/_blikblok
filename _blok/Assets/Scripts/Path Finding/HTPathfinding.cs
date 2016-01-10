@@ -25,19 +25,13 @@ public class HTPathfinding : MonoBehaviour {
 		HTNode startNode = this.grid.NodeFromWorldPoint(startPos);
 		HTNode targetNode = this.grid.NodeFromWorldPoint(targetPos);
 		
-		List<HTNode> openSet = new List<HTNode>();
+		BBHeap<HTNode> openSet = new BBHeap<HTNode>(this.grid.MaxSize);
 		HashSet<HTNode>	closedSet = new HashSet<HTNode>();
 		openSet.Add(startNode);
 
 		while (openSet.Count > 0) {
-			HTNode currentNode = openSet[0];
-			for (int i = 1; i < openSet.Count; i++) {
-				if (openSet[i].FCost < currentNode.FCost || (openSet[i].FCost == currentNode.FCost && openSet[i].HCost < currentNode.HCost)) {
-					currentNode = openSet[i];
-				}
-			}
-			
-			openSet.Remove (currentNode);
+			HTNode currentNode = openSet.RemoveFirst();
+
 			closedSet.Add(currentNode);
 
 			if (currentNode == targetNode) {
@@ -55,6 +49,8 @@ public class HTPathfinding : MonoBehaviour {
 					
 					if (!openSet.Contains(neighbour)) {
 						openSet.Add (neighbour);
+					} else {
+						openSet.UpdateItem(neighbour);
 					}
 				} 
 			}

@@ -7,6 +7,7 @@ public class HTGrid : MonoBehaviour {
 	
 	public LayerMask unwalkableMask;
 	public Vector2 gridWorldSize;
+
 	public float nodeRadius;
 	public HTNode[,] grid;
 	
@@ -29,9 +30,12 @@ public class HTGrid : MonoBehaviour {
 		//Creates path grid starting from bottom left
 		for (int x = 0; x < this.gridSize.X; x++) {
 			for (int y = 0; y < this.gridSize.Y; y++) {
-				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * this.nodeDiameter + this.nodeRadius) + Vector3.up * (y * this.nodeDiameter + this.nodeRadius);
+				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * this.nodeDiameter + this.nodeRadius) 
+				+ Vector3.up * (y * this.nodeDiameter + this.nodeRadius)
+				+ BBSceneConstants.collidedGroundVect;
 				bool isWalkable = !(Physics.CheckSphere(worldPoint, this.nodeRadius, this.unwalkableMask));
-				this.grid[x, y] = new HTNode(isWalkable, worldPoint, new HTVector2Int(x, y));
+				int movementPenalty = 0;
+				this.grid[x, y] = new HTNode(isWalkable, worldPoint, new HTVector2Int(x, y), movementPenalty);
 			}
 		}
 	}

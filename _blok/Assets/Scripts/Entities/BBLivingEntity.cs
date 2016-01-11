@@ -7,7 +7,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	private BBDamageSpeech damageSpeech;
 	
-	private BBController3D controller;
+	protected BBController3D controller;
 	
 	private BBKnockback knockback;
 	

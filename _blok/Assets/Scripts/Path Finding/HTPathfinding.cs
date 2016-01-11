@@ -47,8 +47,8 @@ public class HTPathfinding : MonoBehaviour {
 				}
 				foreach (HTNode neighbour in grid.GetNeighbours(currentNode)) {
 					if (!neighbour.IsWalkable || closedSet.Contains(neighbour)) { continue; }
-					// Cost is the cost to the current position + cost to next node
-					int costToNeighbour = currentNode.GCost + this.GetDistance(currentNode, neighbour);
+					// Cost is the cost to the current position + cost to next node + penalty
+					int costToNeighbour = currentNode.GCost + this.GetDistance(currentNode, neighbour) + neighbour.TerrainPenalty;
 					if (costToNeighbour < neighbour.GCost || !openSet.Contains(neighbour)) {
 						neighbour.GCost = costToNeighbour;
 						neighbour.HCost = GetDistance(neighbour, targetNode);

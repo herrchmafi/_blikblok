@@ -45,6 +45,11 @@ public class HTNode : BBIHeapItem<HTNode> {
 		get { return this.coordinate; }
 	}
 	
+	private int terrainPenalty;
+	public int TerrainPenalty {
+		get { return this.terrainPenalty; }
+	}
+	
 	public int CompareTo(HTNode compareNode) {
 		int compare = this.FCost.CompareTo(compareNode.FCost);
 		if (compare == 0) {
@@ -53,7 +58,7 @@ public class HTNode : BBIHeapItem<HTNode> {
 		return -compare;
 	}
 	
-	public HTNode (bool isWalkable, Vector3 worldPos, HTVector2Int coordinate) {
+	public HTNode (bool isWalkable, Vector3 worldPos, HTVector2Int coordinate, int movementPenalty) {
 		this.isWalkable = isWalkable;
 		this.worldPos = worldPos;
 		this.coordinate = coordinate;

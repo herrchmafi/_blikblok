@@ -28,14 +28,10 @@ public class BBSceneConstants {
 	
 	//ground is where the ground objects are spawned, collidedGround refers to where colliders hit, sprite ground is where the image is to work visually
 	public const float collidedGround = -1.0f;
+	public static Vector3 collidedGroundVect = new Vector3(.0f, .0f, BBSceneConstants.collidedGround);
 	public const float ground = -.0f;
 	public const float spriteGround = .0f;
-	
-	private static Vector3 aStarColliderCenter = new Vector3(.0f, .0f, -1.5f);
-	public static Vector3 AStarColliderCenter {
-		get { return aStarColliderCenter; }
-	}
-	
+		
 	//Player
 	public static readonly Vector3 actionPlayerOffset = new Vector3(.0f, .0f, 1.0f);
 }

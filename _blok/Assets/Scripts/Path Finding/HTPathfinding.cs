@@ -47,13 +47,18 @@ public class HTPathfinding : MonoBehaviour {
 				}
 				foreach (HTNode neighbour in grid.GetNeighbours(currentNode)) {
 					if (!neighbour.IsWalkable || closedSet.Contains(neighbour)) { continue; }
+					if (grid.IsDiagonalMove(currentNode, neighbour)) {
+						if (!grid.IsDiagonalMoveValid(currentNode, neighbour)) { 
+							continue; 
+						}
+					}
 					// Cost is the cost to the current position + cost to next node + penalty
 					int costToNeighbour = currentNode.GCost + this.GetDistance(currentNode, neighbour) + neighbour.TerrainPenalty;
 					if (costToNeighbour < neighbour.GCost || !openSet.Contains(neighbour)) {
 						neighbour.GCost = costToNeighbour;
-						neighbour.HCost = GetDistance(neighbour, targetNode);
+						neighbour.HCost = this.GetDistance(neighbour, targetNode);
 						neighbour.Parent = currentNode;
-						
+				
 						if (!openSet.Contains(neighbour)) {
 							openSet.Add (neighbour);
 						} else {
@@ -91,6 +96,7 @@ public class HTPathfinding : MonoBehaviour {
 		
 		for (int i = 1; i < path.Count; i++) {
 			Vector2 directionNew = new Vector2(path[i - 1].Coordinate.X - path[i].Coordinate.X, path[i - 1].Coordinate.Y - path[i].Coordinate.Y);
+			print(directionNew);
 			if (directionNew != directionOld) {
 				waypoints.Add(path[i].WorldPos);
 				directionOld = directionNew;

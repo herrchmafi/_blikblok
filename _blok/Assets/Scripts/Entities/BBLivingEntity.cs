@@ -12,11 +12,19 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	private BBKnockback knockback;
 	
 	private BBAnimatedEntity animatedEntity;
+
+	private float finalSizeX, finalSizeY;
+	public Vector2 FinalSize {
+		get { return new Vector2(this.finalSizeX, this.finalSizeY); }
+	}
 	
 	public virtual void Start() {
 		this.damageSpeech = transform.GetComponent<BBDamageSpeech>();
 		this.controller = (transform.parent != null) ? gameObject.GetComponentInParent<BBController3D>() : gameObject.GetComponent<BBController3D>();
 		this.animatedEntity = transform.FindChild(BBSceneConstants.animatedEntity).GetComponent<BBAnimatedEntity>();
+		BoxCollider collider = GetComponent<BoxCollider>();
+		this.finalSizeX = collider.size.x * transform.localScale.x / 2.0f;
+		this.finalSizeY = collider.size.y * transform.localScale.y / 2.0f;
 	}
 	
 	public virtual void Update() {

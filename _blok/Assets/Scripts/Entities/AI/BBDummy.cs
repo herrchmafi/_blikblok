@@ -9,11 +9,14 @@ public class BBDummy : BBLivingEntity {
 	private BBTimer timer;
 
 	public Transform target;
+	private Vector3 previousTargetPos = BBMathConstants.nullPoint;
 	private int targetIndex;
 	
 	private Vector3[] path;
 	
 	private Bounds bounds;
+
+	private BBGameController gameController;
 	
 	// Use this for initialization
 	public override void Start () {
@@ -21,13 +24,23 @@ public class BBDummy : BBLivingEntity {
 		this.bounds = GetComponent<Collider>().bounds;
 		this.timer = new BBTimer();
 		this.timer.Start();
+		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
 	}
 	
 	public override void Update() {
 		base.Update();
 		this.timer.Update();
-		if (this.target != null && this.timer.Seconds >= this.pathUpdateTime) {
-			BBPathRequestController.RequestPath(transform.position, this.target.position, OnPathFound);
+		if (this.target == null) {
+			if (this.gameController.Players.Length > 0) {
+				this.target = this.gameController.Players[0].transform;
+			}
+		}
+
+		if (this.target != null 
+		&& !this.previousTargetPos.Equals(this.target.position)
+		&& this.timer.Seconds >= this.pathUpdateTime) {
+			this.previousTargetPos = this.target.position;
+			BBPathRequestController.RequestPath(transform.position, this.target.position, this.FinalSize, OnPathFound);
 			this.timer.Reset();
 		}
 	}
@@ -41,8 +54,10 @@ public class BBDummy : BBLivingEntity {
 	}
 	
 	private IEnumerator FollowPath() {
+		if (path.Length == 0) {
+			yield break;
+		}
 		Vector3 currentWaypoint = path[0];
-		
 		while (true) {
 			if (transform.position == currentWaypoint) {
 				this.targetIndex++;

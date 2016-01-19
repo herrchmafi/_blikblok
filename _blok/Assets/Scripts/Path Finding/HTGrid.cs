@@ -33,7 +33,7 @@ public class HTGrid : MonoBehaviour {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * this.nodeDiameter + this.nodeRadius) 
 				+ Vector3.up * (y * this.nodeDiameter + this.nodeRadius)
 				+ BBSceneConstants.collidedGroundVect;
-				bool isWalkable = !(Physics.CheckSphere(worldPoint, this.nodeRadius, this.unwalkableMask));
+				bool isWalkable = !(Physics.CheckSphere(worldPoint, this.nodeRadius - .01f, this.unwalkableMask));
 				int movementPenalty = 0;
 				this.grid[x, y] = new HTNode(isWalkable, worldPoint, new HTVector2Int(x, y), movementPenalty);
 			}
@@ -54,6 +54,22 @@ public class HTGrid : MonoBehaviour {
 			}
 		}
 		return neighbhours;
+	}
+
+	public bool IsDiagonalMove(HTNode startNode, HTNode targetNode) {
+		return (startNode.Coordinate.X != targetNode.Coordinate.X && startNode.Coordinate.Y != targetNode.Coordinate.Y);
+	}
+
+	//Checks if adjacent horizontal and vertical nodes would be cut off during a diagonal move
+	public bool IsDiagonalMoveValid(HTNode startNode, HTNode targetNode) {
+		int horizontalX = (targetNode.Coordinate.X < startNode.Coordinate.X) ? startNode.Coordinate.X - 1 : startNode.Coordinate.X + 1;
+		if ((horizontalX < 0) || (horizontalX >= this.gridSize.X)) { return false; } 
+		int verticalY = (targetNode.Coordinate.Y < startNode.Coordinate.Y) ? startNode.Coordinate.X - 1 : startNode.Coordinate.Y + 1;
+		if ((verticalY < 0) || (verticalY >= this.gridSize.Y)) { return false; } 
+		HTVector2Int horizontalIndex = new HTVector2Int(horizontalX, startNode.Coordinate.Y);
+		HTVector2Int verticalIndex = new HTVector2Int(startNode.Coordinate.X, verticalY);
+		return (grid[horizontalIndex.X, horizontalIndex.Y].IsWalkable
+		&& grid[verticalIndex.X, verticalIndex.Y].IsWalkable);
 	}
 	
 	//Converts world position to grid coordinate node

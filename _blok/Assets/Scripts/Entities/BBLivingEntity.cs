@@ -13,9 +13,9 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	private BBAnimatedEntity animatedEntity;
 
-	private float finalSizeX, finalSizeY;
-	public Vector2 FinalSize {
-		get { return new Vector2(this.finalSizeX, this.finalSizeY); }
+	private int boundX, boundY;
+	public HTVector2Int Bound {
+		get { return new HTVector2Int(this.boundX, this.boundY); }
 	}
 	
 	public virtual void Start() {
@@ -23,8 +23,8 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		this.controller = (transform.parent != null) ? gameObject.GetComponentInParent<BBController3D>() : gameObject.GetComponent<BBController3D>();
 		this.animatedEntity = transform.FindChild(BBSceneConstants.animatedEntity).GetComponent<BBAnimatedEntity>();
 		BoxCollider collider = GetComponent<BoxCollider>();
-		this.finalSizeX = collider.size.x * transform.localScale.x / 2.0f;
-		this.finalSizeY = collider.size.y * transform.localScale.y / 2.0f;
+		this.boundX = (int)(collider.size.x * transform.localScale.x);
+		this.boundY = (int)(collider.size.y * transform.localScale.y);
 	}
 	
 	public virtual void Update() {

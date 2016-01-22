@@ -9,7 +9,6 @@ public class BBDummy : BBLivingEntity {
 	private BBTimer timer;
 
 	public Transform target;
-	private Vector3 previousTargetPos = BBMathConstants.nullPoint;
 	private int targetIndex;
 	
 	private Vector3[] path;
@@ -36,11 +35,8 @@ public class BBDummy : BBLivingEntity {
 			}
 		}
 
-		if (this.target != null 
-		&& !this.previousTargetPos.Equals(this.target.position)
-		&& this.timer.Seconds >= this.pathUpdateTime) {
-			this.previousTargetPos = this.target.position;
-			BBPathRequestController.RequestPath(transform.position, this.target.position, this.FinalSize, OnPathFound);
+		if (this.target != null && this.timer.Seconds >= this.pathUpdateTime) {
+			BBPathRequestController.RequestPath(transform.position, this.target.position, this.Bound, OnPathFound);
 			this.timer.Reset();
 		}
 	}

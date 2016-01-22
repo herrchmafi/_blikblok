@@ -18,11 +18,11 @@ public class HTPathfinding : MonoBehaviour {
 	}
 	
 	
-	public void StartFindPath(Vector3 startPos, Vector3 targetPos) {
-		StartCoroutine(this.FindPath (startPos, targetPos));
+	public void StartFindPath(Vector3 startPos, Vector3 targetPos, HTVector2Int bound) {
+		StartCoroutine(this.FindPath (startPos, targetPos, bound));
 	}
 
-	private IEnumerator FindPath(Vector3 startPos, Vector3 targetPos) {
+	private IEnumerator FindPath(Vector3 startPos, Vector3 targetPos, HTVector2Int bound) {
 	
 		Vector3[] waypoints = new Vector3[0];
 		bool isPathSuccess = false;
@@ -48,7 +48,7 @@ public class HTPathfinding : MonoBehaviour {
 				foreach (HTNode neighbour in grid.GetNeighbours(currentNode)) {
 					if (!neighbour.IsWalkable || closedSet.Contains(neighbour)) { continue; }
 					if (grid.IsDiagonalMove(currentNode, neighbour)) {
-						if (!grid.IsDiagonalMoveValid(currentNode, neighbour)) { 
+						if (!grid.IsDiagonalMoveValid(currentNode, neighbour, bound)) { 
 							continue; 
 						}
 					}
@@ -96,11 +96,11 @@ public class HTPathfinding : MonoBehaviour {
 		
 		for (int i = 1; i < path.Count; i++) {
 			Vector2 directionNew = new Vector2(path[i - 1].Coordinate.X - path[i].Coordinate.X, path[i - 1].Coordinate.Y - path[i].Coordinate.Y);
-			print(directionNew);
-			if (directionNew != directionOld) {
+//			print(directionNew);
+//			if (directionNew != directionOld) {
 				waypoints.Add(path[i].WorldPos);
-				directionOld = directionNew;
-			}
+//				directionOld = directionNew;
+//			}
 		}
 		return waypoints.ToArray();
 	}

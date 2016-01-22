@@ -61,11 +61,12 @@ public class HTGrid : MonoBehaviour {
 	}
 
 	//Checks if adjacent horizontal and vertical nodes would be cut off during a diagonal move
-	public bool IsDiagonalMoveValid(HTNode startNode, HTNode targetNode) {
-		int horizontalX = (targetNode.Coordinate.X < startNode.Coordinate.X) ? startNode.Coordinate.X - 1 : startNode.Coordinate.X + 1;
+	public bool IsDiagonalMoveValid(HTNode startNode, HTNode targetNode, HTVector2Int bound) {
+		//Set Indices accordingly and check if valid
+		int horizontalX = (targetNode.Coordinate.X < startNode.Coordinate.X) ? startNode.Coordinate.X - bound.X : startNode.Coordinate.X + bound.X;
 		if ((horizontalX < 0) || (horizontalX >= this.gridSize.X)) { return false; } 
-		int verticalY = (targetNode.Coordinate.Y < startNode.Coordinate.Y) ? startNode.Coordinate.X - 1 : startNode.Coordinate.Y + 1;
-		if ((verticalY < 0) || (verticalY >= this.gridSize.Y)) { return false; } 
+		int verticalY = (targetNode.Coordinate.Y < startNode.Coordinate.Y) ? startNode.Coordinate.Y - bound.Y : startNode.Coordinate.Y + bound.Y;
+		if ((verticalY < 0) || (verticalY >= this.gridSize.Y)) { return false; }
 		HTVector2Int horizontalIndex = new HTVector2Int(horizontalX, startNode.Coordinate.Y);
 		HTVector2Int verticalIndex = new HTVector2Int(startNode.Coordinate.X, verticalY);
 		return (grid[horizontalIndex.X, horizontalIndex.Y].IsWalkable

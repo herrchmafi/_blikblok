@@ -20,8 +20,6 @@ public class BBGameController : MonoBehaviour {
 	
 	private BBPlayerCameraController playerCameraController;
 	
-	private AstarPath astarPath;
-	
 	private GameObject[] enemies;
 	public GameObject[] Enemies {
 		get { return this.enemies; }
@@ -37,14 +35,12 @@ public class BBGameController : MonoBehaviour {
 		this.platformGenerator = transform.GetComponent<BBPlatformerGenerator>();
 		this.spriteFactory = transform.GetComponent<BBSpriteFactory>();
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
-//		this.astarPath = GameObject.FindGameObjectWithTag(BBSceneConstants.astarTag).GetComponent<AstarPath>();
 		
 		this.platformGenerator.GenerateMap();
 		
 		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.collidedGround));
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.UpdatePlayers();
-//		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.BOMBER, new Vector3(.0f, 5.0f, BBSceneConstants.collidedGround));
 
 		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	public float health = 100.0f;
+	public float speed;
 	public float defense;
 	
 	private BBDamageSpeech damageSpeech;
@@ -14,8 +15,8 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	private BBAnimatedEntity animatedEntity;
 
 	private int boundX, boundY;
-	public HTVector2Int Bound {
-		get { return new HTVector2Int(this.boundX, this.boundY); }
+	public BBVector2Int Bounds2D {
+		get { return new BBVector2Int(this.boundX, this.boundY); }
 	}
 	
 	public virtual void Start() {

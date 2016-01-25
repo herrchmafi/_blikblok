@@ -9,18 +9,18 @@ public class BBPathRequestController : MonoBehaviour {
 	private PathRequest currentPathRequest;
 	
 	private static BBPathRequestController instance;
-	private HTPathfinding pathfinding;
+	private BBPathfinding pathfinding;
 	
 	private bool isProcessingPath;
 	
 	struct PathRequest {
 		public Vector3 pathStart;
 		public Vector3 pathEnd;
-		public HTVector2Int bound;
+		public BBVector2Int bound;
 
 		public Action<Vector3[], bool> callback;
 		
-		public PathRequest(Vector3 pathStart, Vector3 pathEnd, HTVector2Int bound, Action<Vector3[], bool> callback) {
+		public PathRequest(Vector3 pathStart, Vector3 pathEnd, BBVector2Int bound, Action<Vector3[], bool> callback) {
 			this.pathStart = pathStart;
 			this.pathEnd = pathEnd;
 			this.bound = bound;
@@ -30,10 +30,10 @@ public class BBPathRequestController : MonoBehaviour {
 	
 	void Awake() {
 		BBPathRequestController.instance = this;
-		this.pathfinding = GetComponent<HTPathfinding>();
+		this.pathfinding = GetComponent<BBPathfinding>();
 	}
 	
-	public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, HTVector2Int bound, Action<Vector3[], bool> callback) {
+	public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, BBVector2Int bound, Action<Vector3[], bool> callback) {
 		PathRequest newRequest = new PathRequest(pathStart, pathEnd, bound, callback);
 		BBPathRequestController.instance.pathRequestQueue.Enqueue(newRequest);
 		BBPathRequestController.instance.TryProcessNext();

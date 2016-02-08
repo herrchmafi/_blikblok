@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //This class contains constants that are used within scenes
 public class BBSceneConstants {
@@ -10,7 +11,9 @@ public class BBSceneConstants {
 	public const string actionPlayerTag = "ActionPlayer";
 	public const string gameControllerTag = "GameController";
 	public const string enemyTag = "Enemy";
+	public const string neutralTag = "Neutral";
 	public const string allyTag = "Ally";
+	public const string haterTag = "Hater";
 	public const string deadTag = "Dead";
 	public const string damageTag = "Damage";
 	public const string platformsTag = "Platforms";

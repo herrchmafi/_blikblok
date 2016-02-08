@@ -35,7 +35,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	}
 	
 	//Take hit without knockback using OnTrigger events w/o knockback
-	public void TakeHit(float power, Collider collider) {
+	public void TakeHit(int power, Collider collider) {
 		this.animatedEntity.TakeHit();
 		float targetDamage = power - this.defense;
 		this.damageSpeech.TakeHit(targetDamage);
@@ -49,7 +49,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	}
 	
 	//Take hit without knockback using OnTrigger events with knockback
-	public void TakeHit(float power, Collider collider, BBKnockback knockback) {
+	public void TakeHit(int power, Collider collider, BBKnockback knockback) {
 		this.TakeHit(power, collider);
 		if (this.controller != null && !gameObject.tag.Equals(BBSceneConstants.deadTag)) {
 			this.knockback = knockback;
@@ -68,7 +68,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	}
 	
 	//Call when health is below 0 (or equal)
-	private void Die() {
+	protected void Die() {
 		string tag = gameObject.tag;
 		gameObject.tag = BBSceneConstants.deadTag;
 		if (transform.parent != null) {

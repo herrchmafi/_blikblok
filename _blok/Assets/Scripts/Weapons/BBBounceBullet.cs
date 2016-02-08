@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BBBounceBullet : BBBounceWeapon {
 	public LayerMask reflectLayerMask;	
-	public float bouncesUntilExplosion = 3;
+	public int bouncesUntilExplosion = 3;
 	private float bounces;
 	
 	public override void Update() {

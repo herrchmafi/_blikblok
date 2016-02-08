@@ -3,7 +3,9 @@ using System.Collections;
 
 public class BBExplosion : MonoBehaviour {
 	private BBTimer timer;
-	public float presplosionSeconds;
+	private float presplosionSeconds;
+
+	private int power;
 	
 	// Use this for initialization
 	void Start () {
@@ -27,8 +29,30 @@ public class BBExplosion : MonoBehaviour {
 		this.timer.Start();
 	}
 	
-	public void Explode() {
+	public void Explode(float presplosionSeconds, int power) {
+		this.presplosionSeconds = presplosionSeconds;
+		this.power = power;
 		this.timer = new BBTimer();
 		this.timer.Start();
+	}
+
+	public void ExplodeResult() {
+		Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(.5f, .5f, .5f));
+		foreach (Collider collider in colliders) {
+			BBIDamageable damagable = collider.gameObject.GetComponent<BBIDamageable>();
+			if (damagable != null) {
+				damagable.TakeHit(this.power, null);
+			}
+		}
+
+		if (transform.parent != null) {
+			Transform parent = transform.parent;
+			transform.parent = null;
+			//Destroy hierarchy
+			while (parent.parent != null) {
+				parent = parent.parent;
+			}
+			Destroy(parent.gameObject);
+		}
 	}
 }

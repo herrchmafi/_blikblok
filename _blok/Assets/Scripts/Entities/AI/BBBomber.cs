@@ -4,6 +4,8 @@ using System.Collections;
 public class BBBomber : BBLivingEntity {
 	private BBGameController gameController;
 
+	private BBAnimatedEntity animatedEntity;
+
 	private Transform target;
 
 	private BBTimer timer;
@@ -13,6 +15,9 @@ public class BBBomber : BBLivingEntity {
 	public override void Start () {
 		base.Start();
 		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
+
+		this.animatedEntity = transform.GetChild(0).GetComponent<BBAnimatedEntity>();
+
 		this.pathFinder = GetComponent<BBPathfinder>();
 		this.timer = new BBTimer();
 
@@ -26,8 +31,14 @@ public class BBBomber : BBLivingEntity {
 				this.target = this.gameController.Players[0].transform;
 			}
 		}
-		if (Input.GetKeyDown("p")) {
+		if (Input.GetKeyDown("o")) {
 			this.pathFinder.RequestPath(transform.position, this.target.position, this.Bounds2D, this.speed);
+		}
+	}
+
+	void OnTriggerEnter(Collider collider) {
+		if (BBAIHelper.IsOpponent(gameObject, collider.gameObject)) {
+			this.Die();
 		}
 	}
 }

@@ -25,9 +25,19 @@ public class BBGameController : MonoBehaviour {
 		get { return this.enemies; }
 	}
 	
+	private GameObject[] neutrals;
+	public GameObject[] Neutrals {
+		get { return this.neutrals; }
+	}
+
 	private GameObject[] allies;
 	public GameObject[] Allies {
 		get { return this.allies; }
+	}
+
+	private GameObject[] haters;
+	public GameObject[] Haters {
+		get { return this.haters; }
 	}
 	
 	// Use this for initialization
@@ -43,7 +53,9 @@ public class BBGameController : MonoBehaviour {
 		this.UpdatePlayers();
 
 		this.enemies = GameObject.FindGameObjectsWithTag(BBSceneConstants.enemyTag);
+		this.neutrals = GameObject.FindGameObjectsWithTag(BBSceneConstants.neutralTag);
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
+		this.haters = GameObject.FindGameObjectsWithTag(BBSceneConstants.haterTag);
 		
 	}
 	
@@ -56,11 +68,15 @@ public class BBGameController : MonoBehaviour {
 	void OnEnable() {
 		BBEventController.OnPlayerDeath += UpdatePlayers;
 		BBEventController.OnEnemyDeath += UpdateEnemies;
+		BBEventController.OnNeutralDeath += UpdateNeutrals;
 		BBEventController.OnAllyDeath += UpdateAllies;
+		BBEventController.OnHaterDeath += UpdateHaters;
 		
 		BBEventController.OnPlayerSpawn += UpdatePlayers;
 		BBEventController.OnEnemySpawn += UpdateEnemies;
+		BBEventController.OnNeutralSpawn += UpdateNeutrals;
 		BBEventController.OnAllySpawn += UpdateAllies;
+		BBEventController.OnHaterSpawn += UpdateHaters;
 	}
 	
 	void OnDisable() {
@@ -93,10 +109,24 @@ public class BBGameController : MonoBehaviour {
 			return;
 		}
 	}
-	
+
+	private void UpdateNeutrals() {
+		this.neutrals = GameObject.FindGameObjectsWithTag(BBSceneConstants.neutralTag);
+		if (this.neutrals.Length == 0) {
+			return;
+		}
+	}
+
 	private void UpdateAllies() {
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
 		if (this.allies.Length == 0) {
+			return;
+		}
+	}
+
+	private void UpdateHaters() {
+		this.haters = GameObject.FindGameObjectsWithTag(BBSceneConstants.haterTag);
+		if (this.haters.Length == 0) {
 			return;
 		}
 	}

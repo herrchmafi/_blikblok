@@ -21,9 +21,9 @@ public class BBColorChange : MonoBehaviour {
 		}
 	}
 	
-	private SpriteRenderer renderer;
+	private SpriteRenderer spriteRenderer;
 	public SpriteRenderer Renderer {
-		get { return this.renderer; }
+		get { return this.spriteRenderer; }
 	}
 
 	private Color defaultColor;
@@ -38,8 +38,8 @@ public class BBColorChange : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.renderer = gameObject.GetComponent<SpriteRenderer>();
-		this.defaultColor = this.renderer.material.color;
+		this.spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+		this.defaultColor = this.spriteRenderer.material.color;
 		this.timer = new BBTimer();
 	}
 	
@@ -53,7 +53,7 @@ public class BBColorChange : MonoBehaviour {
 				this.colorIndex++;
 				//If last color change has finished
 				if (this.colorIndex >= this.colorChanges.Count) {
-					this.renderer.material.color = this.colorChanges[this.colorChanges.Count - 1].ToColor;
+					this.spriteRenderer.material.color = this.colorChanges[this.colorChanges.Count - 1].ToColor;
 					this.Stop();
 					return;
 				} else {
@@ -62,13 +62,13 @@ public class BBColorChange : MonoBehaviour {
 					this.timer.Reset();
 				}
 			}
-			this.renderer.material.color = Color.Lerp(this.currentColor, colorChange.ToColor, this.timer.Seconds / colorChange.ColorChangeSeconds);
+			this.spriteRenderer.material.color = Color.Lerp(this.currentColor, colorChange.ToColor, this.timer.Seconds / colorChange.ColorChangeSeconds);
 		}
 	}
 	
 	public void ChangeColors(List<ColorChange> colorChanges) {
 		if (colorChanges.Count > 0) {
-			this.currentColor = this.renderer.material.color;
+			this.currentColor = this.spriteRenderer.material.color;
 			this.colorChanges = colorChanges;
 			if (this.timer.IsTiming) {
 				this.Reset();

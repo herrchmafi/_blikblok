@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class BBDeathExplosionResult : BBExplosionResult {
-
+	private 
 	// Use this for initialization
 	void Start () {
 	

@@ -38,6 +38,7 @@ public class BBSpriteFactory : MonoBehaviour {
 			}	
 		}
 	}
+
 	
 	public static string TagForSprite(Sprite sprite) {
 		switch(sprite) {

@@ -14,7 +14,7 @@ public class BBSpawnExplosionResult : BBExplosionResult {
 	
 	}
 	
-	public void ExplodeResult() {
+	public void ExplodeSpawnResult() {
 		Transform spawn = Instantiate(this.spawnTransform, transform.position, Quaternion.identity) as Transform;
 		BBEventController.SendSpawnNotification(spawn.tag);
 		Destroy(gameObject);

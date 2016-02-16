@@ -18,6 +18,8 @@ public class BBSceneConstants {
 	public const string damageTag = "Damage";
 	public const string platformsTag = "Platforms";
 	public const string astarTag = "Astar";
+	public const string spawnControllerTag = "SpawnController";
+	public const string layoutControllerTag = "LayoutController";
 	
 	//Names used within game object hierarchy (i.e. parents, chidren)
 	public const string actionEntity = "Action Entity";

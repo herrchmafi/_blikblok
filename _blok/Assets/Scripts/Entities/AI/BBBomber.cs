@@ -4,8 +4,6 @@ using System.Collections;
 public class BBBomber : BBLivingEntity {
 	private BBGameController gameController;
 
-	private BBAnimatedEntity animatedEntity;
-
 	private Transform target;
 
 	private BBTimer timer;
@@ -15,8 +13,6 @@ public class BBBomber : BBLivingEntity {
 	public override void Start () {
 		base.Start();
 		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
-
-		this.animatedEntity = transform.GetChild(0).GetComponent<BBAnimatedEntity>();
 
 		this.pathFinder = GetComponent<BBPathfinder>();
 		this.timer = new BBTimer();

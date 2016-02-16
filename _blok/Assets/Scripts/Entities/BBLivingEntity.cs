@@ -12,7 +12,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	
 	private BBKnockback knockback;
 	
-	private BBAnimatedEntity animatedEntity;
+	protected BBAnimatedEntity animatedEntity;
 
 	private int boundX, boundY;
 	public BBVector2Int Bounds2D {

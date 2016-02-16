@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BBGameController : MonoBehaviour {
 	[Range(0, 3)]
@@ -15,7 +16,7 @@ public class BBGameController : MonoBehaviour {
 		get { return this.mainPlayer; }
 	}
 	
-	private BBSpriteFactory spriteFactory;
+	private BBSpawnController spawnController;
 	private BBPlatformerGenerator platformGenerator;
 	
 	private BBPlayerCameraController playerCameraController;
@@ -42,13 +43,16 @@ public class BBGameController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		this.platformGenerator = transform.GetComponent<BBPlatformerGenerator>();
-		this.spriteFactory = transform.GetComponent<BBSpriteFactory>();
+		this.platformGenerator = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBPlatformerGenerator>();
+		this.spawnController = GameObject.FindGameObjectWithTag(BBSceneConstants.spawnControllerTag).GetComponent<BBSpawnController>();
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
 		
 		this.platformGenerator.GenerateMap();
-		
-		this.spriteFactory.CreateSprite(BBSpriteFactory.Sprite.PLAYER, new Vector3(.0f, .0f, BBSceneConstants.collidedGround));
+
+		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
+			new BBSpawnController.SpawnUnit(BBSpriteFactory.Sprite.PLAYER, 3.0f, new Vector3(0.0f, 0.0f, BBSceneConstants.collidedGround))
+		});
+
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.UpdatePlayers();
 

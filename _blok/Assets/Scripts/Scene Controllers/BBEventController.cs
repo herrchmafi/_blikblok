@@ -42,6 +42,6 @@ public class BBEventController : MonoBehaviour {
 			OnAllySpawn();
 		} else if (tag.Equals(BBSceneConstants.haterTag) && OnHaterDeath!= null) {
 			OnHaterSpawn();
-		} 		 
+		} 	
 	}
 }

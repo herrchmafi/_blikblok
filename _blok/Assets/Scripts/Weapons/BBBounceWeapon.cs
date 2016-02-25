@@ -10,11 +10,11 @@ public class BBBounceWeapon : BBWeapon {
 	public virtual void Update () {
 		transform.Translate(this.dirVect * this.velocity * Time.deltaTime);
 	}
-	
+
 	public virtual void OnTriggerEnter(Collider collider) {
 		GameObject collidedObject = collider.gameObject;
 		if (BBUnityComponentsHelper.IsInLayerMask(collidedObject, this.collisionMask)) {
-			this.dirVect = BBPhysicsHelper.reflectDir(this.dirVect, collidedObject.transform.up);
+			this.dirVect = BBPhysicsHelper.reflectDir(this.dirVect.normalized, gameObject, collidedObject);
 		}	
 	} 
 }

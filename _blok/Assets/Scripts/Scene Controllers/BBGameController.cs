@@ -50,7 +50,7 @@ public class BBGameController : MonoBehaviour {
 		this.platformGenerator.GenerateMap();
 
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
-			new BBSpawnController.SpawnUnit(BBSpriteFactory.Sprite.PLAYER, 1.0f, new Vector3(0.0f, 0.0f, BBSceneConstants.collidedGround))
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 1.0f, new Vector3(0.0f, 0.0f, BBSceneConstants.collidedGround)),
 		});
 
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);

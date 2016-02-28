@@ -17,9 +17,10 @@ public class BBSpawnController : MonoBehaviour {
 		public BBSpriteFactory.Sprite Sprite {
 			get { return this.sprite; }
 		}
-		private float spawnDelay;
-		public float SpawnDelay {
-			get { return this.spawnDelay; }
+
+		private float spawnSeconds;
+		public float SpawnSeconds {
+			get { return this.spawnSeconds; }
 		}
 
 		private Vector3 position;
@@ -27,9 +28,9 @@ public class BBSpawnController : MonoBehaviour {
 			get { return this.position; }
 		}
 
-		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelay, Vector3 position) {
+		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, Vector3 position) {
 			this.sprite = sprite;
-			this.spawnDelay = spawnDelay;
+			this.spawnSeconds = spawnDelaySeconds + spawnOffsetSeconds;
 			this.position = position;
 		}
 	}
@@ -49,7 +50,7 @@ public class BBSpawnController : MonoBehaviour {
 			this.timer.Update();
 			HashSet<SpawnUnit> spawnedUnits = new HashSet<SpawnUnit>();
 			foreach (SpawnUnit spawnUnit in this.spawnTrack) {
-				if (this.timer.Seconds >= spawnUnit.SpawnDelay) {
+				if (this.timer.Seconds >= spawnUnit.SpawnSeconds) {
 					this.spriteFactory.CreateSprite(spawnUnit.Sprite, spawnUnit.Position);
 					spawnedUnits.Add(spawnUnit);
 				}
@@ -61,6 +62,13 @@ public class BBSpawnController : MonoBehaviour {
 				this.timer.Stop();
 			}
 		}
+	}
+
+	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, Vector3 position) {
+		if (position.z < BBSceneConstants.collidedGround) {
+			BBErrorHelper.DLog(BBErrorConstants.InvalidParameter, "Z Spawn Coordinate Must Be Greater Than Ground");
+		}
+		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, position);
 	}
 
 	public void LoadTrack(List<SpawnUnit> spawnTrack) {

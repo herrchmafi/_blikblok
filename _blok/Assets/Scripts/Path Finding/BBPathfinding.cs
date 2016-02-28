@@ -96,11 +96,7 @@ public class BBPathfinding : MonoBehaviour {
 		
 		for (int i = 1; i < path.Count; i++) {
 			Vector2 directionNew = new Vector2(path[i - 1].Coordinate.X - path[i].Coordinate.X, path[i - 1].Coordinate.Y - path[i].Coordinate.Y);
-//			print(directionNew);
-//			if (directionNew != directionOld) {
-				waypoints.Add(path[i].WorldPos);
-//				directionOld = directionNew;
-//			}
+			waypoints.Add(path[i].WorldPos);
 		}
 		return waypoints.ToArray();
 	}

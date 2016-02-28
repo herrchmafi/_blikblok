@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BBSpawnExplosionResult : BBExplosionResult {
+public class BBSpawnExplosionResult : MonoBehaviour, BBExplosionResult {
 	public Transform spawnTransform;
 	private BBSpriteFactory factory;
 	// Use this for initialization
@@ -9,12 +9,7 @@ public class BBSpawnExplosionResult : BBExplosionResult {
 		this.factory = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBSpriteFactory>(); 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
-	public void ExplodeSpawnResult() {
+	public void ExplosionResult() {
 		Transform spawn = Instantiate(this.spawnTransform, transform.position, Quaternion.identity) as Transform;
 		BBEventController.SendSpawnNotification(spawn.tag);
 		Destroy(gameObject);

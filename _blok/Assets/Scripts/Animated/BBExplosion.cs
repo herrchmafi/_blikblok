@@ -36,7 +36,7 @@ public class BBExplosion : MonoBehaviour {
 		this.timer.Start();
 	}
 
-	public void ExplodeResult() {
+	public void Explosion() {
 		Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(.5f, .5f, .5f));
 		foreach (Collider collider in colliders) {
 			BBIDamageable damagable = collider.gameObject.GetComponent<BBIDamageable>();
@@ -44,6 +44,9 @@ public class BBExplosion : MonoBehaviour {
 				damagable.TakeHit(this.power, null);
 			}
 		}
+
+		BBExplosionResult explosionResult = gameObject.GetComponent<BBExplosionResult>();
+		explosionResult.ExplosionResult();
 
 		if (transform.parent != null) {
 			Transform parent = transform.parent;

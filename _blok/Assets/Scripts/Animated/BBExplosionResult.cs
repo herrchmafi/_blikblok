@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class BBExplosionResult : MonoBehaviour {
+public interface BBExplosionResult {
 
+	void ExplosionResult();
 
 }

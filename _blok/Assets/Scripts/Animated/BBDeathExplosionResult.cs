@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BBDeathExplosionResult : BBExplosionResult {
-	private 
+public class BBDeathExplosionResult : MonoBehaviour, BBExplosionResult {
+
 	// Use this for initialization
 	void Start () {
 	
@@ -13,7 +13,7 @@ public class BBDeathExplosionResult : BBExplosionResult {
 	
 	}
 	
-	public void ExplodeResult() {
+	public void ExplosionResult() {
 		if (transform.parent != null) {
 			Transform parent = transform.parent;
 			transform.parent = null;

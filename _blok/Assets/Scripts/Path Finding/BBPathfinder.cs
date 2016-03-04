@@ -16,7 +16,7 @@ public class BBPathfinder : MonoBehaviour {
 		
 	}
 
-	public void RequestPath(Vector3 startPos, Vector3 targetPos, BBVector2Int bound, float speed) {
+	public void RequestPath(Vector3 startPos, Vector3 targetPos, BBCoordinate bound, float speed) {
 		this.targetIndex = 0;
 		this.speed = speed;
 		BBPathRequestController.RequestPath(startPos, targetPos, bound, OnPathFound);

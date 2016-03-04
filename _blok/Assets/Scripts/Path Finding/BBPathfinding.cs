@@ -7,22 +7,22 @@ public class BBPathfinding : MonoBehaviour {
 	
 	private BBPathRequestController requestManager;
 
-	private BBGrid grid;
+	private BBGridController grid;
 	
 	private int diagonalMultiplier = 14;
 	private int straightMultiplier = 10;
 	
 	void Awake() {
 		this.requestManager = GetComponent<BBPathRequestController>();
-		this.grid = GetComponent<BBGrid>();
+		this.grid = GetComponent<BBGridController>();
 	}
 	
 	
-	public void StartFindPath(Vector3 startPos, Vector3 targetPos, BBVector2Int bound) {
+	public void StartFindPath(Vector3 startPos, Vector3 targetPos, BBCoordinate bound) {
 		StartCoroutine(this.FindPath (startPos, targetPos, bound));
 	}
 
-	private IEnumerator FindPath(Vector3 startPos, Vector3 targetPos, BBVector2Int bound) {
+	private IEnumerator FindPath(Vector3 startPos, Vector3 targetPos, BBCoordinate bound) {
 	
 		Vector3[] waypoints = new Vector3[0];
 		bool isPathSuccess = false;

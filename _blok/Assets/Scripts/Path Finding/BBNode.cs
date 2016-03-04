@@ -40,9 +40,16 @@ public class BBNode : BBIHeapItem<BBNode> {
 		set { this.parent = value; }
 	}
 	
-	private BBVector2Int coordinate;
-	public BBVector2Int Coordinate {
+	private BBCoordinate coordinate;
+	public BBCoordinate Coordinate {
 		get { return this.coordinate; }
+	}
+
+	//	If living entity is currently on
+	private int inhabitedCount;
+	public int InhabitedCount {
+		get { return this.inhabitedCount; }
+		set { this.inhabitedCount = value; }
 	}
 	
 	private int terrainPenalty;
@@ -58,7 +65,7 @@ public class BBNode : BBIHeapItem<BBNode> {
 		return -compare;
 	}
 	
-	public BBNode (bool isWalkable, Vector3 worldPos, BBVector2Int coordinate, int movementPenalty) {
+	public BBNode (bool isWalkable, Vector3 worldPos, BBCoordinate coordinate, int movementPenalty) {
 		this.isWalkable = isWalkable;
 		this.worldPos = worldPos;
 		this.coordinate = coordinate;

@@ -11,18 +11,22 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	protected BBController3D controller;
 	
 	private BBKnockback knockback;
-	
+
 	protected BBAnimatedEntity animatedEntity;
 
+	public BBGridController gridController;
+	private BBNode previousInhabitedNode;
+
 	private int boundX, boundY;
-	public BBVector2Int Bounds2D {
-		get { return new BBVector2Int(this.boundX, this.boundY); }
+	public BBCoordinate Bounds2D {
+		get { return new BBCoordinate(this.boundX, this.boundY); }
 	}
 	
 	public virtual void Start() {
 		this.damageSpeech = transform.GetComponent<BBDamageSpeech>();
 		this.controller = (transform.parent != null) ? gameObject.GetComponentInParent<BBController3D>() : gameObject.GetComponent<BBController3D>();
 		this.animatedEntity = transform.FindChild(BBSceneConstants.animatedEntity).GetComponent<BBAnimatedEntity>();
+		this.gridController = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBGridController>();
 		BoxCollider collider = GetComponent<BoxCollider>();
 		this.boundX = (int)(collider.size.x * transform.localScale.x);
 		this.boundY = (int)(collider.size.y * transform.localScale.y);
@@ -31,6 +35,20 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	public virtual void Update() {
 		if (this.knockback != null) {
 			this.TakeKnockback(this.knockback);
+		}
+		BBNode currentInhabitedNode = this.gridController.NodeFromWorldPoint(transform.position);
+		//	If previous node not set, set and increment inhabited count
+		if (this.previousInhabitedNode == null) {
+			this.previousInhabitedNode = currentInhabitedNode;
+			this.previousInhabitedNode.InhabitedCount++;
+		} else if (!currentInhabitedNode.Equals(this.previousInhabitedNode)) {
+		//If moving to new node, decrement other count and increase own
+			this.previousInhabitedNode.InhabitedCount--;
+			if (this.previousInhabitedNode.InhabitedCount < 0) {
+				BBErrorHelper.DLog(BBErrorConstants.InvalidValueUpdate, "Inhabited node count went below zero");
+			}
+			this.previousInhabitedNode = currentInhabitedNode;
+			this.previousInhabitedNode.InhabitedCount++;
 		}
 	}
 	

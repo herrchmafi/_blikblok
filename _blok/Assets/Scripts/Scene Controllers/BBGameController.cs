@@ -20,6 +20,8 @@ public class BBGameController : MonoBehaviour {
 	private BBPlatformerGenerator platformGenerator;
 	
 	private BBPlayerCameraController playerCameraController;
+
+	private BBGridController gridController;
 	
 	private GameObject[] enemies;
 	public GameObject[] Enemies {
@@ -45,12 +47,13 @@ public class BBGameController : MonoBehaviour {
 	void Start () {
 		this.platformGenerator = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBPlatformerGenerator>();
 		this.spawnController = GameObject.FindGameObjectWithTag(BBSceneConstants.spawnControllerTag).GetComponent<BBSpawnController>();
+//		this.gridController = GameObject.FindGameObjectWithTag
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
 		
 		this.platformGenerator.GenerateMap();
 
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 1.0f, new Vector3(0.0f, 0.0f, BBSceneConstants.collidedGround)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 1.0f, new BBCoordinate(0, 0)),
 		});
 
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);

@@ -16,11 +16,11 @@ public class BBPathRequestController : MonoBehaviour {
 	struct PathRequest {
 		public Vector3 pathStart;
 		public Vector3 pathEnd;
-		public BBVector2Int bound;
+		public BBCoordinate bound;
 
 		public Action<Vector3[], bool> callback;
 		
-		public PathRequest(Vector3 pathStart, Vector3 pathEnd, BBVector2Int bound, Action<Vector3[], bool> callback) {
+		public PathRequest(Vector3 pathStart, Vector3 pathEnd, BBCoordinate bound, Action<Vector3[], bool> callback) {
 			this.pathStart = pathStart;
 			this.pathEnd = pathEnd;
 			this.bound = bound;
@@ -33,7 +33,7 @@ public class BBPathRequestController : MonoBehaviour {
 		this.pathfinding = GetComponent<BBPathfinding>();
 	}
 	
-	public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, BBVector2Int bound, Action<Vector3[], bool> callback) {
+	public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, BBCoordinate bound, Action<Vector3[], bool> callback) {
 		PathRequest newRequest = new PathRequest(pathStart, pathEnd, bound, callback);
 		BBPathRequestController.instance.pathRequestQueue.Enqueue(newRequest);
 		BBPathRequestController.instance.TryProcessNext();

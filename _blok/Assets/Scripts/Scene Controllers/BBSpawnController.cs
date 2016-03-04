@@ -64,11 +64,8 @@ public class BBSpawnController : MonoBehaviour {
 		}
 	}
 
-	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, Vector3 position) {
-		if (position.z < BBSceneConstants.collidedGround) {
-			BBErrorHelper.DLog(BBErrorConstants.InvalidParameter, "Z Spawn Coordinate Must Be Greater Than Ground");
-		}
-		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, position);
+	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate) {
+		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, new Vector3(coordinate.X, coordinate.Y, BBSceneConstants.collidedGround));
 	}
 
 	public void LoadTrack(List<SpawnUnit> spawnTrack) {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BBVector2Int {
+public class BBCoordinate {
 	private int x;
 	public int X {
 		get { return this.x; }
@@ -14,7 +14,7 @@ public class BBVector2Int {
 		set { this.y = value; }
 	}
 	
-	public BBVector2Int(int x, int y) {
+	public BBCoordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}

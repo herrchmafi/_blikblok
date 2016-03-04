@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BBGrid : MonoBehaviour {
+public class BBGridController : MonoBehaviour {
 	public bool isDisplayingGridGizmos;
 	
 	public LayerMask unwalkableMask;
@@ -12,7 +12,7 @@ public class BBGrid : MonoBehaviour {
 	public BBNode[,] grid;
 	
 	private float nodeDiameter;
-	private BBVector2Int gridSize;
+	private BBCoordinate gridSize;
 	
 	public int MaxSize {
 		get { return this.gridSize.X * this.gridSize.Y; }
@@ -20,7 +20,7 @@ public class BBGrid : MonoBehaviour {
 	
 	void Awake() {
 		this.nodeDiameter = this.nodeRadius * 2;
-		this.gridSize = new BBVector2Int(Mathf.RoundToInt(this.gridWorldSize.x / this.nodeDiameter), Mathf.RoundToInt(this.gridWorldSize.y / this.nodeDiameter));
+		this.gridSize = new BBCoordinate(Mathf.RoundToInt(this.gridWorldSize.x / this.nodeDiameter), Mathf.RoundToInt(this.gridWorldSize.y / this.nodeDiameter));
 		this.CreateGrid();
 	}
 	
@@ -35,7 +35,7 @@ public class BBGrid : MonoBehaviour {
 				+ BBSceneConstants.collidedGroundVect;
 				bool isWalkable = !(Physics.CheckSphere(worldPoint, this.nodeRadius - .01f, this.unwalkableMask));
 				int movementPenalty = 0;
-				this.grid[x, y] = new BBNode(isWalkable, worldPoint, new BBVector2Int(x, y), movementPenalty);
+				this.grid[x, y] = new BBNode(isWalkable, worldPoint, new BBCoordinate(x, y), movementPenalty);
 			}
 		}
 	}
@@ -61,14 +61,14 @@ public class BBGrid : MonoBehaviour {
 	}
 
 	//Checks if adjacent horizontal and vertical nodes would be cut off during a diagonal move
-	public bool IsDiagonalMoveValid(BBNode startNode, BBNode targetNode, BBVector2Int bound) {
+	public bool IsDiagonalMoveValid(BBNode startNode, BBNode targetNode, BBCoordinate bound) {
 		//Set Indices accordingly and check if valid
 		int horizontalX = (targetNode.Coordinate.X < startNode.Coordinate.X) ? startNode.Coordinate.X - bound.X : startNode.Coordinate.X + bound.X;
 		if ((horizontalX < 0) || (horizontalX >= this.gridSize.X)) { return false; } 
 		int verticalY = (targetNode.Coordinate.Y < startNode.Coordinate.Y) ? startNode.Coordinate.Y - bound.Y : startNode.Coordinate.Y + bound.Y;
 		if ((verticalY < 0) || (verticalY >= this.gridSize.Y)) { return false; }
-		BBVector2Int horizontalIndex = new BBVector2Int(horizontalX, startNode.Coordinate.Y);
-		BBVector2Int verticalIndex = new BBVector2Int(startNode.Coordinate.X, verticalY);
+		BBCoordinate horizontalIndex = new BBCoordinate(horizontalX, startNode.Coordinate.Y);
+		BBCoordinate verticalIndex = new BBCoordinate(startNode.Coordinate.X, verticalY);
 		return (grid[horizontalIndex.X, horizontalIndex.Y].IsWalkable
 		&& grid[verticalIndex.X, verticalIndex.Y].IsWalkable);
 	}
@@ -81,7 +81,20 @@ public class BBGrid : MonoBehaviour {
 		int x = Mathf.RoundToInt((this.gridSize.X - 1) * percentX);
 		int y = Mathf.RoundToInt((this.gridSize.Y - 1) * percentY);
 		
-		return grid[x, y];
+		return this.grid[x, y];
+	}
+
+	public BBNode NodeFromCoordinate(BBCoordinate coordinate) {
+		return this.grid[coordinate.X, coordinate.Y];
+	}
+
+	public Vector3 WorldPointFromCoordinate(BBCoordinate coordinate) {
+		Vector3 center = transform.position;
+		return new Vector3(center.x + coordinate.X, center.y + coordinate.Y, BBSceneConstants.collidedGround);
+	}
+
+	public Vector3 WorldPointFromNode(BBNode node) {
+		return WorldPointFromCoordinate(node.Coordinate);
 	}
 	
 	void OnDrawGizmos() {
@@ -90,8 +103,10 @@ public class BBGrid : MonoBehaviour {
 		if (this.grid != null && this.isDisplayingGridGizmos) {
 			foreach (BBNode node in grid) {
 				Gizmos.color = (node.IsWalkable) ? Color.white : Color.red;
-				Gizmos.DrawCube(node.WorldPos, Vector3.one * (this.nodeDiameter -.1f));
-				
+				if (node.InhabitedCount > 0) {
+					Gizmos.color = Color.blue;
+				}
+				Gizmos.DrawCube(node.WorldPos, Vector3.one * (this.nodeDiameter - .1f));
 			}
 		}
 	}

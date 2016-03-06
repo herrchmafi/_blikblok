@@ -6,4 +6,6 @@ public class BBEntityConstants {
 	public const float defaultKnockbackMagnitude = 10.0f;
 	public const int defaultKnockbackDamage = 2;
 	public const float defaultKnockbackTime = .2f;
+
+	public static readonly Vector3 vector3ToCoordinateOffset = new Vector3(-.5f, .5f, .0f);
 }

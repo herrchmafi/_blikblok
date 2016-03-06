@@ -41,13 +41,22 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		if (this.previousInhabitedNode == null) {
 			this.previousInhabitedNode = currentInhabitedNode;
 			this.previousInhabitedNode.InhabitedCount++;
+			if (this.gridController.UnhibitedNodes.Contains(this.previousInhabitedNode)) {
+				this.gridController.UnhibitedNodes.Remove(this.previousInhabitedNode);
+			}
 		} else if (!currentInhabitedNode.Equals(this.previousInhabitedNode)) {
 		//If moving to new node, decrement other count and increase own
 			this.previousInhabitedNode.InhabitedCount--;
 			if (this.previousInhabitedNode.InhabitedCount < 0) {
 				BBErrorHelper.DLog(BBErrorConstants.InvalidValueUpdate, "Inhabited node count went below zero");
 			}
+			if (this.previousInhabitedNode.InhabitedCount == 0 && !this.gridController.UnhibitedNodes.Contains(this.previousInhabitedNode)) {
+				this.gridController.UnhibitedNodes.Add(this.previousInhabitedNode);
+			}
 			this.previousInhabitedNode = currentInhabitedNode;
+			if (this.gridController.UnhibitedNodes.Contains(this.previousInhabitedNode)) {
+				this.gridController.UnhibitedNodes.Remove(this.previousInhabitedNode);
+			}
 			this.previousInhabitedNode.InhabitedCount++;
 		}
 	}

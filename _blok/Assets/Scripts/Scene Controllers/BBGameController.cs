@@ -47,13 +47,12 @@ public class BBGameController : MonoBehaviour {
 	void Start () {
 		this.platformGenerator = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBPlatformerGenerator>();
 		this.spawnController = GameObject.FindGameObjectWithTag(BBSceneConstants.spawnControllerTag).GetComponent<BBSpawnController>();
-//		this.gridController = GameObject.FindGameObjectWithTag
+		this.gridController = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBGridController>();
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
 		
 		this.platformGenerator.GenerateMap();
-
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 1.0f, new BBCoordinate(0, 0)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, this.gridController.CoordinateFromWorldPoint(new Vector2(0, 2)), true)
 		});
 
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);

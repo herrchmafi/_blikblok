@@ -65,10 +65,11 @@ public class BBNode : BBIHeapItem<BBNode> {
 		return -compare;
 	}
 	
-	public BBNode (bool isWalkable, Vector3 worldPos, BBCoordinate coordinate, int movementPenalty) {
+	public BBNode (bool isWalkable, Vector3 worldPos, BBCoordinate coordinate, int terrainPenalty) {
 		this.isWalkable = isWalkable;
 		this.worldPos = worldPos;
-		this.coordinate = coordinate;
+		this.coordinate = coordinate; 
+		this.terrainPenalty = terrainPenalty;
 	}
 	
 }

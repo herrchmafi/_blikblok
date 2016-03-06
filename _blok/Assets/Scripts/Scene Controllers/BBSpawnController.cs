@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class BBSpawnController : MonoBehaviour {
 	private BBSpriteFactory spriteFactory;
 
+	private BBGridController gridController;
+
 	private BBTimer timer;
 
 	private List<SpawnUnit> spawnTrack;
@@ -23,21 +25,28 @@ public class BBSpawnController : MonoBehaviour {
 			get { return this.spawnSeconds; }
 		}
 
-		private Vector3 position;
-		public Vector3 Position {
-			get { return this.position; }
+		private BBCoordinate coordinate;
+		public BBCoordinate Coordinate {
+			get { return this.coordinate; }
 		}
 
-		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, Vector3 position) {
+		private bool atOpenCoordinate;
+		public bool AtOpenCoordinate {
+			get { return this.atOpenCoordinate; }
+		}
+
+		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, BBCoordinate coordinate, bool atOpenCoordinate) {
 			this.sprite = sprite;
 			this.spawnSeconds = spawnDelaySeconds + spawnOffsetSeconds;
-			this.position = position;
+			this.coordinate = coordinate;
+			this.atOpenCoordinate = atOpenCoordinate;
 		}
 	}
 
 	void Awake() {
 		this.timer = new BBTimer();
 		this.spawnTrack = new List<SpawnUnit>();
+		this.gridController = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBGridController>();
 	}
 
 	// Use this for initialization
@@ -51,7 +60,13 @@ public class BBSpawnController : MonoBehaviour {
 			HashSet<SpawnUnit> spawnedUnits = new HashSet<SpawnUnit>();
 			foreach (SpawnUnit spawnUnit in this.spawnTrack) {
 				if (this.timer.Seconds >= spawnUnit.SpawnSeconds) {
-					this.spriteFactory.CreateSprite(spawnUnit.Sprite, spawnUnit.Position);
+					if (spawnUnit.AtOpenCoordinate) {
+						BBCoordinate nearestCoordinate = this.gridController.NearestOpenCoordinate(spawnUnit.Coordinate);
+						if (nearestCoordinate == null) { continue; }
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate) + BBEntityConstants.vector3ToCoordinateOffset);
+					} else {
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(spawnUnit.Coordinate));
+					}
 					spawnedUnits.Add(spawnUnit);
 				}
 			}
@@ -64,8 +79,10 @@ public class BBSpawnController : MonoBehaviour {
 		}
 	}
 
-	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate) {
-		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, new Vector3(coordinate.X, coordinate.Y, BBSceneConstants.collidedGround));
+	//	Place wherever you want
+	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate, bool atValidCoordinate) {
+		BBNode referencedNode = this.gridController.grid[coordinate.X, coordinate.Y];
+		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, coordinate, atValidCoordinate);
 	}
 
 	public void LoadTrack(List<SpawnUnit> spawnTrack) {

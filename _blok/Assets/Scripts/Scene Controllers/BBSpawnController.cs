@@ -63,7 +63,7 @@ public class BBSpawnController : MonoBehaviour {
 					if (spawnUnit.AtOpenCoordinate) {
 						BBCoordinate nearestCoordinate = this.gridController.NearestOpenCoordinate(spawnUnit.Coordinate);
 						if (nearestCoordinate == null) { continue; }
-						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate) + BBEntityConstants.vector3ToCoordinateOffset);
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate));
 					} else {
 						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(spawnUnit.Coordinate));
 					}

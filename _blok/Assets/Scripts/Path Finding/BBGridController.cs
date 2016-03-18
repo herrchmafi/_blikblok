@@ -40,7 +40,7 @@ public class BBGridController : MonoBehaviour {
 		for (int x = 0; x < this.gridSize.X / this.nodeDiameter; x++) {
 			for (int y = 0; y < this.gridSize.Y / this.nodeDiameter; y++) {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x + this.nodeRadius) 
-				+ Vector3.up * (y + this.nodeRadius)
+					+ Vector3.up * (y  + this.nodeRadius)
 				+ BBSceneConstants.collidedGroundVect;
 				bool isWalkable = !(Physics.CheckSphere(worldPoint, this.nodeRadius - .01f, this.unwalkableMask));
 				BBNode newNode = new BBNode(isWalkable, worldPoint, new BBCoordinate(x, y), 0);
@@ -101,12 +101,11 @@ public class BBGridController : MonoBehaviour {
 		if (this.isOpenNodeAtCoordinate(coordinate)) { return this.NodeFromCoordinate(coordinate); }
 		Queue<BBCoordinate> coordinatesToSearch = new Queue<BBCoordinate>();
 		coordinatesToSearch.Enqueue(coordinate);
-		//	BFS for open node	
+		//	BFS for open node
+		HashSet<BBCoordinate> searchedCoordinates = new HashSet<BBCoordinate>();	
 		while (coordinatesToSearch.Count > 0) {
-			HashSet<BBCoordinate> searchedCoordinates = new HashSet<BBCoordinate>();
 			BBCoordinate coor = coordinatesToSearch.Dequeue();
 			if (this.isOpenNodeAtCoordinate(coor)) {
-				print("Final " + coor.X + ", " + coor.Y);
 				return this.NodeFromCoordinate(coor);
 			}
 			BBCoordinate left = new BBCoordinate(coor.X - 1, coor.Y);
@@ -124,13 +123,12 @@ public class BBGridController : MonoBehaviour {
 
 	//	Used in conjunction with NearestOpenNode to reduce boilerplate
 	private void OpenNodeHelper(BBCoordinate coordinate, HashSet<BBCoordinate> searchedCoordinates, Queue<BBCoordinate> coordinatesToSearch) {
-		if (this.IsCoordinateInBounds(coordinate)) {
-			print("Testing " + coordinate.X + ", " + coordinate.Y);
-			if (!searchedCoordinates.Contains(coordinate) && !coordinatesToSearch.Contains(coordinate)) {
-				print("Enqueing " + coordinate.X + ", " + coordinate.Y);
+		if (!searchedCoordinates.Contains(coordinate) && !coordinatesToSearch.Contains(coordinate)) {
+			if (this.IsCoordinateInBounds(coordinate)) {
 				coordinatesToSearch.Enqueue(coordinate);
 			}
 		}
+	
 	}
 
 	public bool isOpenNode(BBNode node) {
@@ -162,7 +160,7 @@ public class BBGridController : MonoBehaviour {
 
 	public Vector3 WorldPointFromCoordinate(BBCoordinate coordinate) {
 		Vector3 center = transform.position;
-		return new Vector3(center.x + (coordinate.X - (this.gridWorldSize.x / 2)), center.y + (coordinate.Y - (this.gridWorldSize.y / 2)), BBSceneConstants.collidedGround);
+		return new Vector3(center.x + (coordinate.X - (this.gridWorldSize.x / 2)) + this.nodeRadius, center.y + (coordinate.Y - (this.gridWorldSize.y / 2)) + this.nodeRadius, BBSceneConstants.collidedGround);
 	}
 
 	public Vector3 WorldPointFromNode(BBNode node) {

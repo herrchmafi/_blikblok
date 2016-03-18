@@ -52,7 +52,7 @@ public class BBGameController : MonoBehaviour {
 		
 		this.platformGenerator.GenerateMap();
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, this.gridController.CoordinateFromWorldPoint(new Vector2(0, 2)), true)
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true)
 		});
 
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);

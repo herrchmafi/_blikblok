@@ -7,5 +7,5 @@ public class BBEntityConstants {
 	public const int defaultKnockbackDamage = 2;
 	public const float defaultKnockbackTime = .2f;
 
-	public static readonly Vector3 vector3ToCoordinateOffset = new Vector3(-.5f, .5f, .0f);
+//	public static readonly Vector3 coordinateToVector3 = new Vector3(-.5f, .5f, .0f);
 }

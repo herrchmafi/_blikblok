@@ -9,9 +9,16 @@ public class BBSpawnExplosionResult : MonoBehaviour, BBExplosionResult {
 		this.factory = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBSpriteFactory>(); 	
 	}
 	
-	public void ExplosionResult() {
+	public void ExplosionResult(int number) {
 		Transform spawn = Instantiate(this.spawnTransform, transform.position, Quaternion.identity) as Transform;
+		print("Number = " + number);
+		spawn.GetComponent<BBBasePlayerController>().Init(number);
 		BBEventController.SendSpawnNotification(spawn.tag);
 		Destroy(gameObject);
-	}	
+	}
+
+	public void ExplosionResult() {
+		this.ExplosionResult((int)BBSceneConstants.NumberConventions.DEFAULTNUMBER);
+	}
+		
 }

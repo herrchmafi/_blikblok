@@ -10,9 +10,6 @@ public class BBSpawnController : MonoBehaviour {
 	private BBTimer timer;
 
 	private List<SpawnUnit> spawnTrack;
-	public List<SpawnUnit> SpawnTrack {
-		get { return this.spawnTrack; }
-	}
 
 	public struct SpawnUnit {
 		private BBSpriteFactory.Sprite sprite;
@@ -35,11 +32,18 @@ public class BBSpawnController : MonoBehaviour {
 			get { return this.atOpenCoordinate; }
 		}
 
-		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, BBCoordinate coordinate, bool atOpenCoordinate) {
+		private int number;
+		public int Number {
+			get { return this.number; }
+		}
+
+		//	If number is not needed, just feed it a negative number. This will be the convention we use instead of assigning it random values
+		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, BBCoordinate coordinate, bool atOpenCoordinate, int number) {
 			this.sprite = sprite;
 			this.spawnSeconds = spawnDelaySeconds + spawnOffsetSeconds;
 			this.coordinate = coordinate;
 			this.atOpenCoordinate = atOpenCoordinate;
+			this.number = number;
 		}
 	}
 
@@ -63,9 +67,9 @@ public class BBSpawnController : MonoBehaviour {
 					if (spawnUnit.AtOpenCoordinate) {
 						BBCoordinate nearestCoordinate = this.gridController.NearestOpenCoordinate(spawnUnit.Coordinate);
 						if (nearestCoordinate == null) { continue; }
-						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate));
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate), spawnUnit.Number);
 					} else {
-						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(spawnUnit.Coordinate));
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(spawnUnit.Coordinate), spawnUnit.Number);
 					}
 					spawnedUnits.Add(spawnUnit);
 				}
@@ -80,9 +84,9 @@ public class BBSpawnController : MonoBehaviour {
 	}
 
 	//	Place wherever you want
-	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate, bool atValidCoordinate) {
+	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate, bool atValidCoordinate, int number) {
 		BBNode referencedNode = this.gridController.grid[coordinate.X, coordinate.Y];
-		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, coordinate, atValidCoordinate);
+		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, coordinate, atValidCoordinate, number);
 	}
 
 	public void LoadTrack(List<SpawnUnit> spawnTrack) {

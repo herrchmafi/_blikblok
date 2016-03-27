@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Collections;
 [RequireComponent (typeof (BoxCollider))]
-public class BBBasePlayerController : MonoBehaviour {
-	[Range(0, 3)]
-	public int playerNumber;
+public class BBBasePlayerController : MonoBehaviour { 
+	private int number;
+	public int Number {
+		get { return this.number; }
+	}
 	
 	public float maxSpeed = 5.0f;
 	
@@ -37,18 +39,23 @@ public class BBBasePlayerController : MonoBehaviour {
 		this.actionPlayerController = transform.Find(BBSceneConstants.actionEntity).GetComponent<BBActionPlayerController>();
 		transform.parent = GameObject.FindGameObjectWithTag(BBSceneConstants.playersTag).transform;
 	}
+
+	public void Init(int number) {
+		this.number = number;
+		GameObject.FindGameObjectWithTag(BBSceneConstants.canvasControllerTag).GetComponent<BBHUDController>().CreatePlayerHUD(this.number);
+	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (tag.Equals(BBSceneConstants.deadTag)) { return; }
-		this.playerInput = new Vector2(Input.GetAxisRaw (BBSceneConstants.horizontalInput + playerNumber), Input.GetAxisRaw (BBSceneConstants.verticalInput + playerNumber));
+		this.playerInput = new Vector2(Input.GetAxisRaw (BBSceneConstants.horizontalInput + this.number), Input.GetAxisRaw (BBSceneConstants.verticalInput + this.number));
 		Vector3 targetVelocityXY = new Vector3(this.playerInput.x * this.maxSpeed, this.playerInput.y * this.maxSpeed);
 		this.velocityVect.x = Mathf.SmoothDamp(this.velocityVect.x, targetVelocityXY.x, ref this.velocityXSmoothing, this.accelerationTime);
 		this.velocityVect.y = Mathf.SmoothDamp(this.velocityVect.y, targetVelocityXY.y, ref this.velocityYSmoothing, this.accelerationTime); 
 		
 		//Jumping Logic
 		if (this.controller.CollInfo.isBack) {
-			if (Input.GetButtonDown(BBSceneConstants.jumpInput + this.playerNumber)) {
+			if (Input.GetButtonDown(BBSceneConstants.jumpInput + this.number)) {
 				this.actionPlayerController.Jump();
 				this.velocityVect.z = this.jumpVelocity;
 			} else if ((Mathf.Abs(this.playerInput.x) > 0 || Mathf.Abs(this.playerInput.y) > 0)) {

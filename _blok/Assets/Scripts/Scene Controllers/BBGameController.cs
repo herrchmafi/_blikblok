@@ -42,7 +42,7 @@ public class BBGameController : MonoBehaviour {
 	public GameObject[] Haters {
 		get { return this.haters; }
 	}
-	
+
 	// Use this for initialization
 	void Start () {
 		this.platformGenerator = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBPlatformerGenerator>();
@@ -52,9 +52,12 @@ public class BBGameController : MonoBehaviour {
 		
 		this.platformGenerator.GenerateMap();
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true)
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true, 0),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(15, 16), true, 1),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(17, 16), true, 2),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(19, 16), true, 3)
+		
 		});
-
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.UpdatePlayers();
 
@@ -62,7 +65,6 @@ public class BBGameController : MonoBehaviour {
 		this.neutrals = GameObject.FindGameObjectsWithTag(BBSceneConstants.neutralTag);
 		this.allies = GameObject.FindGameObjectsWithTag(BBSceneConstants.allyTag);
 		this.haters = GameObject.FindGameObjectsWithTag(BBSceneConstants.haterTag);
-		
 	}
 	
 	void OnEnable() {
@@ -90,7 +92,7 @@ public class BBGameController : MonoBehaviour {
 		}
 		//Sets camera target
 		foreach (GameObject player in this.players) {
-			if (player.GetComponent<BBBasePlayerController>().playerNumber == this.mainPlayerNumber) {
+			if (player.GetComponent<BBBasePlayerController>().Number == this.mainPlayerNumber) {
 				this.mainPlayer = player;
 				this.playerCameraController.SetTargetPlayer(player);
 				break;

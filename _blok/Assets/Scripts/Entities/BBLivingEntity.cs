@@ -31,7 +31,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		this.boundX = (int)(collider.size.x * transform.localScale.x);
 		this.boundY = (int)(collider.size.y * transform.localScale.y);
 	}
-	
+
 	public virtual void Update() {
 		if (this.knockback != null) {
 			this.TakeKnockback(this.knockback);

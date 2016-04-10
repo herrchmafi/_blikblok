@@ -40,7 +40,7 @@ public class BBSceneConstants {
 		
 	//	Player
 	//	This is the animated entity in relation to the action player
-	public static readonly Vector3 actionPlayerOffset = Vector3.zero;
+	public static readonly Vector3 actionPlayerOffset = Vector3.forward;
 
 	//Entity
 	public enum NumberConventions {

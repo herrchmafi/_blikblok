@@ -37,13 +37,19 @@ public class BBSpawnController : MonoBehaviour {
 			get { return this.number; }
 		}
 
+		private BBEntityStats stats;
+		public BBEntityStats Stats {
+			get { return this.stats; }
+		}
+
 		//	If number is not needed, just feed it a negative number. This will be the convention we use instead of assigning it random values
-		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, BBCoordinate coordinate, bool atOpenCoordinate, int number) {
+		public SpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, float spawnOffsetSeconds, BBCoordinate coordinate, bool atOpenCoordinate, int number, BBEntityStats stats) {
 			this.sprite = sprite;
 			this.spawnSeconds = spawnDelaySeconds + spawnOffsetSeconds;
 			this.coordinate = coordinate;
 			this.atOpenCoordinate = atOpenCoordinate;
 			this.number = number;
+			this.stats = stats;
 		}
 	}
 
@@ -67,9 +73,9 @@ public class BBSpawnController : MonoBehaviour {
 					if (spawnUnit.AtOpenCoordinate) {
 						BBCoordinate nearestCoordinate = this.gridController.NearestOpenCoordinate(spawnUnit.Coordinate);
 						if (nearestCoordinate == null) { continue; }
-						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate), spawnUnit.Number);
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(nearestCoordinate), spawnUnit.Number, spawnUnit.Stats);
 					} else {
-						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(spawnUnit.Coordinate), spawnUnit.Number);
+						this.spriteFactory.CreateSprite(spawnUnit.Sprite, this.gridController.WorldPointFromCoordinate(spawnUnit.Coordinate), spawnUnit.Number, spawnUnit.Stats);
 					}
 					spawnedUnits.Add(spawnUnit);
 				}
@@ -84,9 +90,9 @@ public class BBSpawnController : MonoBehaviour {
 	}
 
 	//	Place wherever you want
-	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate, bool atValidCoordinate, int number) {
+	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate, bool atValidCoordinate, int number, BBEntityStats stats) {
 		BBNode referencedNode = this.gridController.grid[coordinate.X, coordinate.Y];
-		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, coordinate, atValidCoordinate, number);
+		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, coordinate, atValidCoordinate, number, stats);
 	}
 
 	public void LoadTrack(List<SpawnUnit> spawnTrack) {

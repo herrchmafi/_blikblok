@@ -25,9 +25,9 @@ public class BBSpriteFactory : MonoBehaviour {
 		switch (sprite) {
 			case Sprite.PLAYER:
 				spawn = Instantiate(this.playerSpawnFab, position, Quaternion.identity) as Transform;
-				BBExplosion spawnExplosion = spawn.GetComponent<BBExplosion>();
-				spawnExplosion.Number = number;
-				spawnExplosion.
+				BBSpawnExplosionResult explosionResult = spawn.GetComponent<BBSpawnExplosionResult>();
+				explosionResult.SpawnNumber = number;
+				explosionResult.SpawnStats = stats;
 				break;
 			case Sprite.TURRET:
 				spawn = Instantiate(this.turretSpawnFab, position, Quaternion.identity) as Transform;

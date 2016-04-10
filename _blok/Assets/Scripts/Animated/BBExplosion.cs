@@ -6,12 +6,6 @@ public class BBExplosion : MonoBehaviour {
 	private float presplosionSeconds;
 
 	private int power;
-
-	private int number = (int)BBSceneConstants.NumberConventions.DEFAULTNUMBER;
-	public int Number {
-		get { return this.number; }
-		set { this.number = value; }
-	}
 	
 	// Use this for initialization
 	void Start () {
@@ -52,7 +46,7 @@ public class BBExplosion : MonoBehaviour {
 		}
 
 		BBExplosionResult explosionResult = gameObject.GetComponent<BBExplosionResult>();
-		explosionResult.ExplosionResult(this.number);
+		explosionResult.ExplosionResult();
 
 		if (transform.parent != null) {
 			Transform parent = transform.parent;

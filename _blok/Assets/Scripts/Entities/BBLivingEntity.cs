@@ -2,9 +2,8 @@
 using System.Collections;
 
 public class BBLivingEntity : MonoBehaviour, BBIDamageable {
-	public float health = 100.0f;
-	public float speed;
-	public float defense;
+	protected BBEntityStats stats;
+	protected int number;
 	
 	private BBDamageSpeech damageSpeech;
 	
@@ -30,6 +29,7 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		BoxCollider collider = GetComponent<BoxCollider>();
 		this.boundX = (int)(collider.size.x * transform.localScale.x);
 		this.boundY = (int)(collider.size.y * transform.localScale.y);
+		this.stats = new BBEntityStats(100, 0, 4);
 	}
 
 	public virtual void Update() {
@@ -64,13 +64,13 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 	//Take hit without knockback using OnTrigger events w/o knockback
 	public void TakeHit(int power, Collider collider) {
 		this.animatedEntity.TakeHit();
-		float targetDamage = power - this.defense;
+		int targetDamage = power - this.stats.Defense;
 		this.damageSpeech.TakeHit(targetDamage);
-		if (targetDamage < .0f) {
-			targetDamage = .0f; 
+		if (targetDamage < 0) {
+			targetDamage = 0; 
 		}
-		this.health -= targetDamage;
-		if (this.health <= .0f) {
+		this.stats.Health -= targetDamage;
+		if (this.stats.Health <= .0f) {
 			this.Die();
 		}
 	}

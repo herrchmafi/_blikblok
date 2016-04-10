@@ -28,7 +28,7 @@ public class BBBomber : BBLivingEntity {
 			}
 		}
 		if (Input.GetKeyDown("o")) {
-			this.pathFinder.RequestPath(transform.position, this.target.position, this.Bounds2D, this.speed);
+			this.pathFinder.RequestPath(transform.position, this.target.position, this.Bounds2D, this.stats.Speed);
 		}
 	}
 

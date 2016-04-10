@@ -2,17 +2,6 @@
 using System.Collections;
 
 public class BBDeathExplosionResult : MonoBehaviour, BBExplosionResult {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	public void ExplosionResult(int number) {
 		if (transform.parent != null) {
 			Transform parent = transform.parent;

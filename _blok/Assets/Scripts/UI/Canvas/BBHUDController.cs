@@ -4,16 +4,7 @@ using System.Collections;
 public class BBHUDController : MonoBehaviour {
 	public Transform playerHUDFab;
 	//	TODO:// Temporary so I can see stuff. Will make more flexible later on
-	public static readonly Vector2 playerHUDLeftOffset = new Vector3(-450.0f, 250.0f);
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	public static readonly Vector2 playerHUDLeftOffset = new Vector3(500.0f, 600.0f);
 
 	public void CreatePlayerHUD(int playerNumber) {
 		Transform playerHUDTransform = (Transform)Instantiate(this.playerHUDFab, Vector3.zero, Quaternion.identity);

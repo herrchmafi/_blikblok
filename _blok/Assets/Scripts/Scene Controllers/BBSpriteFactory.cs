@@ -20,12 +20,14 @@ public class BBSpriteFactory : MonoBehaviour {
 		get { return this.playersSpawnedCount; }
 	}
 	
-	public void CreateSprite(Sprite sprite, Vector3 position, int number) {
+	public void CreateSprite(Sprite sprite, Vector3 position, int number, BBEntityStats stats) {
 		Transform spawn = null;
 		switch (sprite) {
 			case Sprite.PLAYER:
 				spawn = Instantiate(this.playerSpawnFab, position, Quaternion.identity) as Transform;
-				spawn.GetComponent<BBExplosion>().Number = number;
+				BBExplosion spawnExplosion = spawn.GetComponent<BBExplosion>();
+				spawnExplosion.Number = number;
+				spawnExplosion.
 				break;
 			case Sprite.TURRET:
 				spawn = Instantiate(this.turretSpawnFab, position, Quaternion.identity) as Transform;
@@ -45,7 +47,6 @@ public class BBSpriteFactory : MonoBehaviour {
 		}
 	}
 
-	
 	public static string TagForSprite(Sprite sprite) {
 		switch(sprite) {
 			case Sprite.PLAYER:

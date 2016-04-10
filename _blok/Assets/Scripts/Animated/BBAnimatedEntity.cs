@@ -32,7 +32,7 @@ public class BBAnimatedEntity : BBAnimated {
 	
 	//This is called by parent class. A hit prefab is instantiated and the object flashes to corresponding hitColor
 	public void TakeHit() {
-		Transform hitTransform = (Transform)Instantiate(this.hitFab, transform.parent.position, transform.parent.rotation);
+		Transform hitTransform = (Transform)Instantiate(this.hitFab, transform.parent.position + BBSceneConstants.actionPlayerOffset, transform.parent.rotation);
 		hitTransform.parent = transform;
 		this.colorChange.Renderer.material.color = this.colorChange.DefaultColor;
 		this.colorChange.ChangeColors(new List<BBColorChange.ColorChange>() {

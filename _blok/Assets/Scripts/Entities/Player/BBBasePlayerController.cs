@@ -2,11 +2,6 @@ using UnityEngine;
 using System.Collections;
 [RequireComponent (typeof (BoxCollider))]
 public class BBBasePlayerController : MonoBehaviour { 
-	private int number;
-	public int Number {
-		get { return this.number; }
-	}
-	
 	public float maxSpeed = 5.0f;
 	
 	public float accelerationTime;
@@ -40,8 +35,9 @@ public class BBBasePlayerController : MonoBehaviour {
 		transform.parent = GameObject.FindGameObjectWithTag(BBSceneConstants.playersTag).transform;
 	}
 
-	public void Init(int number) {
+	public void Init(int number, BBEntityStats stats) {
 		this.number = number;
+		this.stats = stats;
 		GameObject.FindGameObjectWithTag(BBSceneConstants.canvasControllerTag).GetComponent<BBHUDController>().CreatePlayerHUD(this.number);
 	}
 	

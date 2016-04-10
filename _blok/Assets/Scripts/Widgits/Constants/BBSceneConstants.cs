@@ -39,7 +39,8 @@ public class BBSceneConstants {
 	public const float spriteGround = .0f;
 		
 	//	Player
-	public static readonly Vector3 actionPlayerOffset = new Vector3(.0f, .0f, 1.0f);
+	//	This is the animated entity in relation to the action player
+	public static readonly Vector3 actionPlayerOffset = Vector3.zero;
 
 	//Entity
 	public enum NumberConventions {

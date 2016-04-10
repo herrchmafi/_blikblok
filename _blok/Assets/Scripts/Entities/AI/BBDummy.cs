@@ -27,7 +27,7 @@ public class BBDummy : BBLivingEntity {
 			}
 		}
 		if (Input.GetKeyDown("p")) {
-			this.pathFinder.RequestPath(transform.position, this.target.position, this.Bounds2D, this.speed);
+			this.pathFinder.RequestPath(transform.position, this.target.position, this.Bounds2D, this.stats.Speed);
 		}
 	}
 	

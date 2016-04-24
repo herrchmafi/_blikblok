@@ -32,7 +32,9 @@ public class BBAnimatedEntity : BBAnimated {
 	
 	//This is called by parent class. A hit prefab is instantiated and the object flashes to corresponding hitColor
 	public void TakeHit() {
-		Transform hitTransform = (Transform)Instantiate(this.hitFab, transform.parent.position + BBSceneConstants.actionPlayerOffset, transform.parent.rotation);
+		//	Basically, for players we need the offset whereas everything else doesn't have one. This is due to the hierarchy
+		Vector3 offset = (transform.localPosition.z.Equals(Vector3.zero)) ? Vector3.zero : BBSceneConstants.actionPlayerOffset;
+		Transform hitTransform = (Transform)Instantiate(this.hitFab, transform.parent.position + offset, transform.parent.rotation);
 		hitTransform.parent = transform;
 		this.colorChange.Renderer.material.color = this.colorChange.DefaultColor;
 		this.colorChange.ChangeColors(new List<BBColorChange.ColorChange>() {

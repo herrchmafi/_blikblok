@@ -2,7 +2,11 @@
 using System.Collections;
 
 public class BBLivingEntity : MonoBehaviour, BBIDamageable {
-	protected BBEntityStats stats;
+	private BBEntityStats stats;
+	public BBEntityStats Stats {
+		get { return this.stats; }
+		set { this.stats = value; }
+	}
 	protected int number;
 	
 	private BBDamageSpeech damageSpeech;
@@ -29,7 +33,6 @@ public class BBLivingEntity : MonoBehaviour, BBIDamageable {
 		BoxCollider collider = GetComponent<BoxCollider>();
 		this.boundX = (int)(collider.size.x * transform.localScale.x);
 		this.boundY = (int)(collider.size.y * transform.localScale.y);
-		this.stats = new BBEntityStats(100, 0, 4);
 	}
 
 	public virtual void Update() {

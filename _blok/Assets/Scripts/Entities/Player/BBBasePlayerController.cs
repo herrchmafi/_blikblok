@@ -3,6 +3,7 @@ using System.Collections;
 [RequireComponent (typeof (BoxCollider))]
 public class BBBasePlayerController : MonoBehaviour {
 
+	[SerializeField]
 	private int number;
 	public int Number {
 		get { return this.number; }
@@ -37,14 +38,14 @@ public class BBBasePlayerController : MonoBehaviour {
 		this.gravity = BBPhysicsHelper.ObjectGravity(this.jumpHeight, this.timeToJumpApex);
 		this.jumpVelocity = BBPhysicsHelper.JumpVelocity(this.gravity, this.timeToJumpApex);
 		this.controller = gameObject.GetComponent<BBController3D>();
-		this.actionPlayerController = transform.Find(BBSceneConstants.actionEntity).GetComponent<BBActionPlayerController>();
 		transform.parent = GameObject.FindGameObjectWithTag(BBSceneConstants.playersTag).transform;
 	}
 
 	public void Init(int number, BBEntityStats stats) {
 		this.number = number;
-		//	Pass stats
-		GameObject.FindGameObjectWithTag(BBSceneConstants.canvasControllerTag).GetComponent<BBHUDController>().CreatePlayerHUD(this.number);
+		this.actionPlayerController = transform.Find(BBSceneConstants.actionEntity).GetComponent<BBActionPlayerController>();
+		this.actionPlayerController.Stats = stats;
+		GameObject.FindGameObjectWithTag(BBSceneConstants.canvasControllerTag).transform.GetComponent<BBCanvasController>().SyncPlayerStat(this.number, stats);
 	}
 	
 	// Update is called once per frame

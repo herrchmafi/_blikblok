@@ -22,7 +22,7 @@ public class BBSceneConstants {
 	public const string layoutControllerTag = "LayoutController";
 	public const string canvasControllerTag = "CanvasController";
 	
-	//	Names used within game object hierarchy (i.e. parents, chidren)
+	//	Player Names
 	public const string actionEntity = "Action Entity";
 	public const string animatedEntity = "Animated Entity";
 	

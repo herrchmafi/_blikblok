@@ -52,10 +52,10 @@ public class BBGameController : MonoBehaviour {
 		
 		this.platformGenerator.GenerateMap();
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true, 0, new BBEntityStats(100, 0, 4)),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(15, 16), true, 1, new BBEntityStats(100, 0, 4)),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(17, 16), true, 2, new BBEntityStats(100, 0, 4)),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(19, 16), true, 3, new BBEntityStats(100, 0, 4))
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true, 0, new BBEntityStats("Raul", 100, 0, 4)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(15, 16), true, 1, new BBEntityStats("Gladys", 100, 0, 4)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(17, 16), true, 2, new BBEntityStats("Barf", 100, 0, 4)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(19, 16), true, 3, new BBEntityStats("Tongue", 100, 0, 4))
 		
 		});
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);

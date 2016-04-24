@@ -18,7 +18,7 @@ public class BBBasher : MonoBehaviour {
 	private GameObject target;
 	// Use this for initialization
 	void Start () {
-		this.gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<BBGameController>();
+		this.gameController = GameObject.FindGameObjectWithTag(BBSceneConstants.gameControllerTag).GetComponent<BBGameController>();
 		this.currentState = State.LOADING;
 	}
 	

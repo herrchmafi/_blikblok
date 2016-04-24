@@ -23,7 +23,11 @@ public class BBSpawnExplosionResult : MonoBehaviour, BBExplosionResult {
 	
 	public void ExplosionResult() {
 		Transform spawn = Instantiate(this.spawnTransform, transform.position, Quaternion.identity) as Transform;
-		spawn.GetComponent<BBBasePlayerController>().Init(this.spawnNumber, this.spawnStats);
+		if (spawn.tag.Equals(BBSceneConstants.playerTag)) {
+			spawn.GetComponent<BBBasePlayerController>().Init(this.spawnNumber, this.spawnStats);
+		} else {
+			spawn.GetComponent<BBLivingEntity>().Init(this.spawnNumber, this.spawnStats);
+		}
 		BBEventController.SendSpawnNotification(spawn.tag);
 		Destroy(gameObject);
 	}

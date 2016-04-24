@@ -22,9 +22,10 @@ public class BBSceneConstants {
 	public const string layoutControllerTag = "LayoutController";
 	public const string canvasControllerTag = "CanvasController";
 	
-	//	Player Names
+	//	Names
 	public const string actionEntity = "Action Entity";
 	public const string animatedEntity = "Animated Entity";
+	public const string enemy = "Enemy";
 	
 	//	Input Elements
 	public const string horizontalInput = "Horizontal";

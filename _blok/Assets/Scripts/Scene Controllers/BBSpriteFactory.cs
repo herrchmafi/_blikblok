@@ -20,7 +20,7 @@ public class BBSpriteFactory : MonoBehaviour {
 		get { return this.playersSpawnedCount; }
 	}
 	
-	public void CreateSprite(Sprite sprite, Vector3 position, int number, BBEntityStats stats) {
+	public void CreateSprite(Sprite sprite, Vector3 position, BBEntityStats stats, int number) {
 		Transform spawn = null;
 		switch (sprite) {
 			case Sprite.PLAYER:
@@ -46,6 +46,10 @@ public class BBSpriteFactory : MonoBehaviour {
 				explosion.Explode(1.0f);
 			}	
 		}
+	}
+
+	public void CreateSprite(Sprite sprite, Vector3 position, BBEntityStats stats) {
+		this.CreateSprite(sprite, position, stats, (int)BBSceneConstants.NumberConventions.DEFAULTNUMBER);
 	}
 
 	public static string TagForSprite(Sprite sprite) {

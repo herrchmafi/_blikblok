@@ -44,8 +44,8 @@ public class BBBasePlayerController : MonoBehaviour {
 	public void Init(int number, BBEntityStats stats) {
 		this.number = number;
 		this.actionPlayerController = transform.Find(BBSceneConstants.actionEntity).GetComponent<BBActionPlayerController>();
-		this.actionPlayerController.Stats = stats;
-		GameObject.FindGameObjectWithTag(BBSceneConstants.canvasControllerTag).transform.GetComponent<BBCanvasController>().SyncPlayerStat(this.number, stats);
+		this.actionPlayerController.Init(number, stats);
+		GameObject.FindGameObjectWithTag(BBSceneConstants.canvasControllerTag).GetComponent<BBCanvasController>().SyncPlayerStat(this.number, stats);
 	}
 	
 	// Update is called once per frame

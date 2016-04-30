@@ -5,6 +5,12 @@ using System.Collections.Generic;
 public class BBGameController : MonoBehaviour {
 	[Range(0, 3)]
 	public int mainPlayerNumber;
+
+	[Range(1, 4)]
+	public int playerCount;
+
+	public Transform playerHUD1;
+	public Transform playerHUD4;
 	
 	private GameObject[] players;
 	public GameObject[] Players {
@@ -49,14 +55,29 @@ public class BBGameController : MonoBehaviour {
 		this.spawnController = GameObject.FindGameObjectWithTag(BBSceneConstants.spawnControllerTag).GetComponent<BBSpawnController>();
 		this.gridController = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBGridController>();
 		this.playerCameraController = Camera.main.GetComponent<BBPlayerCameraController>();
-		
+
+		Transform playerHUD = null;
+		switch (this.playerCount) {
+		case 1:
+			playerHUD = Instantiate(this.playerHUD1, Vector3.zero, Quaternion.identity) as Transform;
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			playerHUD = Instantiate(this.playerHUD4, Vector3.zero, Quaternion.identity) as Transform;
+			break;
+		default:
+			BBErrorHelper.DLog(BBErrorConstants.InvalidSwitchInput, "Player count is invalid");
+			break;
+		}
+		playerHUD.parent = GameObject.FindGameObjectWithTag(BBSceneConstants.controllersTag).transform;
+
 		this.platformGenerator.GenerateMap();
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
 			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true, new BBEntityStats("Raul", 100, 0, 4), 0),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(15, 16), true, new BBEntityStats("Gladys", 100, 0, 4), 1),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(17, 16), true, new BBEntityStats("Barf", 100, 0, 4), 2),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(19, 16), true, new BBEntityStats("Tongue", 100, 0, 4), 3),
-//			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.BOMBER, 1.0f, new BBCoordinate(17, 18), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.BOMBER, 1.0f, new BBCoordinate(17, 18), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0)),
 			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.TURRET, 1.0f, new BBCoordinate(19, 18), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0))
 		});
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);

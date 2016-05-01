@@ -78,7 +78,8 @@ public class BBGameController : MonoBehaviour {
 		this.spawnController.LoadTrack(new List<BBSpawnController.SpawnUnit>() {
 			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.PLAYER, 0.0f, new BBCoordinate(13, 16), true, new BBEntityStats("Raul", 100, 0, 4), 0),
 			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.BOMBER, 1.0f, new BBCoordinate(17, 18), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0)),
-			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.TURRET, 1.0f, new BBCoordinate(19, 18), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0))
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.TURRET, 1.0f, new BBCoordinate(19, 18), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0)),
+			this.spawnController.CreateSpawnUnit(BBSpriteFactory.Sprite.DUMMY, 1.0f, new BBCoordinate(22,20), true, new BBEntityStats(BBSceneConstants.enemy, 20, 0, 0))
 		});
 		this.players = GameObject.FindGameObjectsWithTag(BBSceneConstants.playerTag);
 		this.UpdatePlayers();

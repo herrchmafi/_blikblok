@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BBBounceWeapon : BBWeapon {
 	public LayerMask collisionMask;
+
 	public Vector3 dirVect;
 	public float velocity;
 	
@@ -17,4 +18,5 @@ public class BBBounceWeapon : BBWeapon {
 			this.dirVect = BBPhysicsHelper.reflectDir(this.dirVect.normalized, gameObject, collidedObject);
 		}	
 	} 
+
 }

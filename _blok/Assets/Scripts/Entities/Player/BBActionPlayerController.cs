@@ -13,19 +13,21 @@ public class BBActionPlayerController : BBLivingEntity {
 	public State CurrentState {
 		get { return this.currentState; }
 	}
-	
-	public Transform meleeFab;
-	private Transform meleeFabLocal;
-	
+
+	public Transform normalFab;
+	private Transform normalFabLocal;
+
+	public Transform specialFab;
+
 	private BBAnimatedEntity animatedPlayer;
 	
 	// Use this for initialization
 	public override void Start () {
 		base.Start();
 		this.currentState = State.IDLE;
-		this.meleeFabLocal = (Transform)Instantiate(this.meleeFab, transform.position, transform.rotation);
-		this.meleeFabLocal.parent = transform;
-		this.meleeFabLocal.localPosition += Vector3.up;
+		this.normalFabLocal = (Transform)Instantiate(this.normalFab, transform.position, transform.rotation);
+		this.normalFabLocal.parent = transform;
+		this.normalFabLocal.localPosition += Vector3.up;
 		this.animatedPlayer = transform.FindChild(BBSceneConstants.animatedEntity).GetComponent<BBAnimatedEntity>();
 	}
 	
@@ -50,11 +52,13 @@ public class BBActionPlayerController : BBLivingEntity {
 	}
 	
 	public void NormalAttack() {
-		this.meleeFabLocal.GetComponent<BBMelee>().IsAttacking = true;
+		this.normalFabLocal.GetComponent<BBMelee>().IsAttacking = true;
 	}
 	
 	public void SpecialAttack() {
-	
+		Transform localSpecialFab = (Transform)Instantiate(this.specialFab, transform.position, Quaternion.identity);
+		BBBounceBullet bounceBullet = localSpecialFab.GetComponent<BBBounceBullet>();
+		bounceBullet.Init(transform.up, gameObject);
 	}
 	
 	public void Look(Vector3 lookVect) {

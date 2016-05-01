@@ -97,8 +97,8 @@ public class BBTurret : BBLivingEntity {
 	
 	private void Fire() {
 		this.timer.Stop();
-		GameObject bulletObject = (GameObject) Instantiate(this.bulletFab, transform.position + transform.up, Quaternion.identity);
-		bulletObject.GetComponent<BBBounceBullet>().FireInDir(transform.up);
+		GameObject bulletObject = (GameObject) Instantiate(this.bulletFab, transform.position, Quaternion.identity);
+		bulletObject.GetComponent<BBBounceBullet>().Init(transform.up, gameObject);
 		this.currentState = State.ATTACKING;
 		this.currentShot++;
 	}

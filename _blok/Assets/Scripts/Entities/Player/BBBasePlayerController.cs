@@ -85,6 +85,8 @@ public class BBBasePlayerController : MonoBehaviour {
 		//Player input
 		if (Input.GetButtonDown(BBSceneConstants.normalAttackInput)) {
 			this.actionPlayerController.NormalAttack();
+		} else if(Input.GetButtonDown(BBSceneConstants.specialAttackInput)) {
+			this.actionPlayerController.SpecialAttack();
 		}
 	}
 }

@@ -72,7 +72,7 @@ public class BBGridController : MonoBehaviour {
 	}
 
 	public bool IsCoordinateInBounds(BBCoordinate coordinate) {
-		return (coordinate.X >= 0 && coordinate.Y < this.gridSize.X) && (coordinate.Y >= 0 && coordinate.Y < this.gridSize.Y);
+		return (coordinate.X >= 0 && coordinate.X < this.gridSize.X) && (coordinate.Y >= 0 && coordinate.Y < this.gridSize.Y);
 	}
 
 	//	Checks if adjacent horizontal and vertical nodes would be cut off during a diagonal move

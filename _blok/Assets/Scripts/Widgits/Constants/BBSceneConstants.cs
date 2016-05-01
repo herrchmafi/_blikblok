@@ -33,6 +33,7 @@ public class BBSceneConstants {
 	public const string verticalInput = "Vertical";
 	public const string jumpInput = "Jump";
 	public const string normalAttackInput = "NormalAttack";
+	public const string specialAttackInput = "SpecialAttack";
 	
 	//	Ground is where the ground objects are spawned, collidedGround refers to where colliders hit, sprite ground is where the image is to work visually
 	public const float collidedGround = -1.0f;

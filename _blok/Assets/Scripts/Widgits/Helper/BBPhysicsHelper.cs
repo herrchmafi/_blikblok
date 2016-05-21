@@ -76,18 +76,17 @@ public class BBPhysicsHelper {
 		Transform sourceTransform = source.transform;
 		Transform targetTransform = target.transform;
 		SideBounds sourceBounds = new SideBounds(
-									sourceTransform.position.x - sourceTransform.localScale.x * sourceColliderSize.x,
-									sourceTransform.position.y - sourceTransform.localScale.y * sourceColliderSize.y,
-									sourceTransform.position.x + sourceTransform.localScale.x * sourceColliderSize.x,
-									sourceTransform.position.y + sourceTransform.localScale.y * sourceColliderSize.y
+									sourceTransform.position.x - sourceTransform.localScale.x * sourceColliderSize.x / 2,
+									sourceTransform.position.y - sourceTransform.localScale.y * sourceColliderSize.y / 2,
+									sourceTransform.position.x + sourceTransform.localScale.x * sourceColliderSize.x / 2,
+									sourceTransform.position.y + sourceTransform.localScale.y * sourceColliderSize.y / 2
 									);
 		SideBounds targetBounds = new SideBounds (
-									targetTransform.position.x - targetTransform.localScale.x * targetColliderSize.x,
-									targetTransform.position.y - targetTransform.localScale.y * targetColliderSize.y,
-									targetTransform.position.x + targetTransform.localScale.x * targetColliderSize.x,
-									targetTransform.position.y + targetTransform.localScale.y * targetColliderSize.y
-
-																							);
+									targetTransform.position.x - targetTransform.localScale.x * targetColliderSize.x / 2,
+									targetTransform.position.y - targetTransform.localScale.y * targetColliderSize.y / 2,
+									targetTransform.position.x + targetTransform.localScale.x * targetColliderSize.x / 2,
+									targetTransform.position.y + targetTransform.localScale.y * targetColliderSize.y / 2
+									);
 		// Find smallest differenced between side and just go with it
 
 		PositionRelation minRelation = PositionRelation.LEFT;

@@ -98,14 +98,14 @@ public class BBGridController : MonoBehaviour {
 	}
 
 	public BBNode NearestOpenNode(BBCoordinate coordinate) {
-		if (this.isOpenNodeAtCoordinate(coordinate)) { return this.NodeFromCoordinate(coordinate); }
+		if (this.IsOpenNodeAtCoordinate(coordinate)) { return this.NodeFromCoordinate(coordinate); }
 		Queue<BBCoordinate> coordinatesToSearch = new Queue<BBCoordinate>();
 		coordinatesToSearch.Enqueue(coordinate);
 		//	BFS for open node
 		HashSet<BBCoordinate> searchedCoordinates = new HashSet<BBCoordinate>();	
 		while (coordinatesToSearch.Count > 0) {
 			BBCoordinate coor = coordinatesToSearch.Dequeue();
-			if (this.isOpenNodeAtCoordinate(coor)) {
+			if (this.IsOpenNodeAtCoordinate(coor)) {
 				return this.NodeFromCoordinate(coor);
 			}
 			BBCoordinate left = new BBCoordinate(coor.X - 1, coor.Y);
@@ -131,16 +131,44 @@ public class BBGridController : MonoBehaviour {
 	
 	}
 
-	public bool isOpenNode(BBNode node) {
-		return this.isOpenNodeAtCoordinate(node.Coordinate);
+	//	Determine valid nodes
+
+	private bool IsCoordinateInGridBounds(BBCoordinate coordinate) {
+		return !(coordinate.X >= this.gridWorldSize.x|| coordinate.Y >= this.gridWorldSize.y);
 	}
 
-	public bool isOpenNodeAtCoordinate(BBCoordinate coordinate) {
-		if (coordinate.X >= this.gridWorldSize.x|| coordinate.Y >= this.gridWorldSize.y) {
+	public bool IsNodeAtCoordinate(BBCoordinate coordinate) {
+		if (!this.IsCoordinateInBounds(coordinate)) {
+			return false;
+		}
+		BBNode node = this.NodeFromCoordinate(coordinate);
+		return node.IsWalkable;
+	}
+	public bool IsOpenNode(BBNode node) {
+		return this.IsOpenNodeAtCoordinate(node.Coordinate);
+	}
+
+	public bool IsOpenNodeAtCoordinate(BBCoordinate coordinate) {
+		if (!this.IsCoordinateInBounds(coordinate)) {
 			return false;
 		}
 		BBNode node = this.NodeFromCoordinate(coordinate);
 		return (node.IsWalkable && node.InhabitedCount == 0);
+	}
+
+	public BBGroundTile TileAtCoordinate(BBCoordinate coordinate) {
+		if (!this.IsNodeAtCoordinate(coordinate)) {
+			return null;
+		}
+		//	WorldPointFromCoordinate returns the collided ground. We want where the ground actually is for these calculations
+		Collider[] colliders = Physics.OverlapSphere(this.WorldPointFromCoordinate(coordinate) - BBSceneConstants.collidedGroundVect, this.nodeRadius - .01f);
+		foreach (Collider collider in colliders) {
+			BBGroundTile tile = collider.gameObject.GetComponent<BBGroundTile>();
+			if (tile != null) {
+				return tile;
+			}
+		}
+		return null;
 	}
 	
 	//	Converts world position to grid coordinate node
@@ -162,6 +190,7 @@ public class BBGridController : MonoBehaviour {
 		Vector3 center = transform.position;
 		return new Vector3(center.x + (coordinate.X - (this.gridWorldSize.x / 2)) + this.nodeRadius, center.y + (coordinate.Y - (this.gridWorldSize.y / 2)) + this.nodeRadius, BBSceneConstants.collidedGround);
 	}
+
 
 	public Vector3 WorldPointFromNode(BBNode node) {
 		return WorldPointFromCoordinate(node.Coordinate);

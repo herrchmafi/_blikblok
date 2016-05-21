@@ -57,8 +57,10 @@ public class BBActionPlayerController : BBLivingEntity {
 	
 	public void SpecialAttack() {
 		Transform localSpecialFab = (Transform)Instantiate(this.specialFab, transform.position, Quaternion.identity);
-		BBBounceBullet bounceBullet = localSpecialFab.GetComponent<BBBounceBullet>();
-		bounceBullet.Init(transform.up, gameObject);
+		BBDrawWeapon draw = localSpecialFab.GetComponent<BBDrawWeapon>();
+		draw.Init(gameObject);
+//		BBBounceBullet bounceBullet = localSpecialFab.GetComponent<BBBounceBullet>();
+//		bounceBullet.Init(transform.up, gameObject);
 	}
 	
 	public void Look(Vector3 lookVect) {

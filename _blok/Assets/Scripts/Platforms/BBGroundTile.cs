@@ -38,4 +38,9 @@ public class BBGroundTile : MonoBehaviour {
 		this.fromScale = Vector3.one;
 		this.timer.Start();
 	}
+
+	public void ChangeColor() {
+		SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
+		renderer.material.color = Color.blue;
+	}
 }

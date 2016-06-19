@@ -2,17 +2,7 @@
 using System.Collections;
 
 public class BBCoordinate {
-	private int x;
-	public int X {
-		get { return this.x; }
-		set { this.x = value; }
-	}
-	
-	private int y;
-	public int Y {
-		get { return this.y; }
-		set { this.y = value; }
-	}
+	public int x , y;
 
 	public string CoordinateString {
 		get { return "x: " + this.x + ", y: " + this.y; }
@@ -26,8 +16,8 @@ public class BBCoordinate {
 	public static BBCoordinate CompoundCoordinate(BBCoordinate[] coordinates) {
 		int x = 0, y = 0;
 		for (int i = 0; i < coordinates.Length; i++) {
-			x += coordinates[i].X;
-			y += coordinates[i].Y;
+			x += coordinates[i].x;
+			y += coordinates[i].y;
 		}
 		return new BBCoordinate(x, y);
 	}

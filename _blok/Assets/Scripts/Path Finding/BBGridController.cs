@@ -24,7 +24,7 @@ public class BBGridController : MonoBehaviour {
 	private BBCoordinate gridSize;
 	
 	public int MaxSize {
-		get { return this.gridSize.X * this.gridSize.Y; }
+		get { return this.gridSize.x * this.gridSize.y; }
 	}
 	
 	void Awake() {
@@ -34,11 +34,11 @@ public class BBGridController : MonoBehaviour {
 	}
 	
 	public void CreateGrid() {
-		this.grid = new BBNode[this.gridSize.X, this.gridSize.Y];
+		this.grid = new BBNode[this.gridSize.x, this.gridSize.y];
 		Vector3 worldBottomLeft = transform.position - Vector3.right * this.gridWorldSize.x / 2 - Vector3.up * this.gridWorldSize.y / 2;
 		//	Creates path grid starting from bottom left
-		for (int x = 0; x < this.gridSize.X / this.nodeDiameter; x++) {
-			for (int y = 0; y < this.gridSize.Y / this.nodeDiameter; y++) {
+		for (int x = 0; x < this.gridSize.x / this.nodeDiameter; x++) {
+			for (int y = 0; y < this.gridSize.y / this.nodeDiameter; y++) {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x + this.nodeRadius) 
 					+ Vector3.up * (y  + this.nodeRadius)
 				+ BBSceneConstants.collidedGroundVect;
@@ -58,9 +58,9 @@ public class BBGridController : MonoBehaviour {
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
 				if (x == 0 && y == 0) { continue; }
-				BBCoordinate checkCoordinate = new BBCoordinate(node.Coordinate.X + x, node.Coordinate.Y + y);
+				BBCoordinate checkCoordinate = new BBCoordinate(node.Coordinate.x + x, node.Coordinate.y + y);
 				if (this.IsCoordinateInBounds(checkCoordinate)) {
-					neighbhours.Add(grid[checkCoordinate.X, checkCoordinate.Y]);
+					neighbhours.Add(grid[checkCoordinate.x, checkCoordinate.y]);
 				}
 			}
 		}
@@ -68,24 +68,24 @@ public class BBGridController : MonoBehaviour {
 	}
 
 	public bool IsDiagonalMove(BBNode startNode, BBNode targetNode) {
-		return (startNode.Coordinate.X != targetNode.Coordinate.X && startNode.Coordinate.Y != targetNode.Coordinate.Y);
+		return (startNode.Coordinate.x != targetNode.Coordinate.x && startNode.Coordinate.y != targetNode.Coordinate.y);
 	}
 
 	public bool IsCoordinateInBounds(BBCoordinate coordinate) {
-		return (coordinate.X >= 0 && coordinate.X < this.gridSize.X) && (coordinate.Y >= 0 && coordinate.Y < this.gridSize.Y);
+		return (coordinate.x >= 0 && coordinate.x < this.gridSize.x) && (coordinate.y >= 0 && coordinate.y < this.gridSize.y);
 	}
 
 	//	Checks if adjacent horizontal and vertical nodes would be cut off during a diagonal move
 	public bool IsDiagonalMoveValid(BBNode startNode, BBNode targetNode, BBCoordinate bound) {
 		//Set Indices accordingly and check if valid
-		int horizontalX = (targetNode.Coordinate.X < startNode.Coordinate.X) ? startNode.Coordinate.X - bound.X : startNode.Coordinate.X + bound.X;
-		if ((horizontalX < 0) || (horizontalX >= this.gridSize.X)) { return false; } 
-		int verticalY = (targetNode.Coordinate.Y < startNode.Coordinate.Y) ? startNode.Coordinate.Y - bound.Y : startNode.Coordinate.Y + bound.Y;
-		if ((verticalY < 0) || (verticalY >= this.gridSize.Y)) { return false; }
-		BBCoordinate horizontalIndex = new BBCoordinate(horizontalX, startNode.Coordinate.Y);
-		BBCoordinate verticalIndex = new BBCoordinate(startNode.Coordinate.X, verticalY);
-		return (grid[horizontalIndex.X, horizontalIndex.Y].IsWalkable
-		&& grid[verticalIndex.X, verticalIndex.Y].IsWalkable);
+		int horizontalX = (targetNode.Coordinate.x < startNode.Coordinate.x) ? startNode.Coordinate.x - bound.x : startNode.Coordinate.x + bound.x;
+		if ((horizontalX < 0) || (horizontalX >= this.gridSize.x)) { return false; } 
+		int verticalY = (targetNode.Coordinate.y < startNode.Coordinate.y) ? startNode.Coordinate.y - bound.y : startNode.Coordinate.y + bound.y;
+		if ((verticalY < 0) || (verticalY >= this.gridSize.y)) { return false; }
+		BBCoordinate horizontalIndex = new BBCoordinate(horizontalX, startNode.Coordinate.y);
+		BBCoordinate verticalIndex = new BBCoordinate(startNode.Coordinate.x, verticalY);
+		return (grid[horizontalIndex.x, horizontalIndex.y].IsWalkable
+			&& grid[verticalIndex.x, verticalIndex.y].IsWalkable);
 	}
 
 	public BBCoordinate NearestOpenCoordinate(BBCoordinate coordinate) {
@@ -108,13 +108,13 @@ public class BBGridController : MonoBehaviour {
 			if (this.IsOpenNodeAtCoordinate(coor)) {
 				return this.NodeFromCoordinate(coor);
 			}
-			BBCoordinate left = new BBCoordinate(coor.X - 1, coor.Y);
+			BBCoordinate left = new BBCoordinate(coor.x - 1, coor.y);
 			this.OpenNodeHelper(left, searchedCoordinates, coordinatesToSearch);
-			BBCoordinate top = new BBCoordinate(coor.X, coor.Y + 1);
+			BBCoordinate top = new BBCoordinate(coor.x, coor.y + 1);
 			this.OpenNodeHelper(top, searchedCoordinates, coordinatesToSearch);
-			BBCoordinate right = new BBCoordinate(coor.X + 1, coor.Y);
+			BBCoordinate right = new BBCoordinate(coor.x + 1, coor.y);
 			this.OpenNodeHelper(right, searchedCoordinates, coordinatesToSearch);
-			BBCoordinate bottom = new BBCoordinate(coor.X, coor.Y - 1);
+			BBCoordinate bottom = new BBCoordinate(coor.x, coor.y - 1);
 			this.OpenNodeHelper(bottom, searchedCoordinates, coordinatesToSearch);
 			searchedCoordinates.Add(coor);
 		}
@@ -134,7 +134,7 @@ public class BBGridController : MonoBehaviour {
 	//	Determine valid nodes
 
 	private bool IsCoordinateInGridBounds(BBCoordinate coordinate) {
-		return !(coordinate.X >= this.gridWorldSize.x|| coordinate.Y >= this.gridWorldSize.y);
+		return !(coordinate.x >= this.gridWorldSize.x|| coordinate.y >= this.gridWorldSize.y);
 	}
 
 	public bool IsNodeAtCoordinate(BBCoordinate coordinate) {
@@ -176,24 +176,24 @@ public class BBGridController : MonoBehaviour {
 		float percentX = Mathf.Clamp01((worldPos.x + this.gridWorldSize.x / 2) / this.gridWorldSize.x);
 		float percentY = Mathf.Clamp01((worldPos.y + this.gridWorldSize.y / 2) / this.gridWorldSize.y);
 		
-		int x = Mathf.RoundToInt((this.gridSize.X - 1) * percentX);
-		int y = Mathf.RoundToInt((this.gridSize.Y - 1) * percentY);
+		int x = Mathf.RoundToInt((this.gridSize.x - 1) * percentX);
+		int y = Mathf.RoundToInt((this.gridSize.x - 1) * percentY);
 		
 		return this.grid[x, y];
 	}
 
 	public BBNode NodeFromCoordinate(BBCoordinate coordinate) {
-		return this.grid[coordinate.X, coordinate.Y];
+		return this.grid[coordinate.x, coordinate.y];
 	}
 
 	public Vector3 WorldPointFromCoordinate(BBCoordinate coordinate) {
 		Vector3 center = transform.position;
-		return new Vector3(center.x + (coordinate.X - (this.gridWorldSize.x / 2)) + this.nodeRadius, center.y + (coordinate.Y - (this.gridWorldSize.y / 2)) + this.nodeRadius, BBSceneConstants.collidedGround);
+		return new Vector3(center.x + (coordinate.x - (this.gridWorldSize.x / 2)) + this.nodeRadius, center.y + (coordinate.y - (this.gridWorldSize.y / 2)) + this.nodeRadius, BBSceneConstants.collidedGround);
 	}
 
 
 	public Vector3 WorldPointFromNode(BBNode node) {
-		return WorldPointFromCoordinate(node.Coordinate);
+		return this.WorldPointFromCoordinate(node.Coordinate);
 	}
 
 	public BBCoordinate CoordinateFromWorldPoint(Vector2 worldPos) {
@@ -202,7 +202,7 @@ public class BBGridController : MonoBehaviour {
 	
 	void OnDrawGizmos() {
 		if (!Application.isPlaying) { return; }
-		Gizmos.DrawWireCube(transform.position, new Vector3(this.gridSize.X, this.gridSize.Y, 0));
+		Gizmos.DrawWireCube(transform.position, new Vector3(this.gridSize.y, this.gridSize.y, 0));
 		if (this.grid != null && this.isDisplayingGridGizmos) {
 			foreach (BBNode node in grid) {
 				Gizmos.color = (node.IsWalkable) ? Color.white : Color.red;

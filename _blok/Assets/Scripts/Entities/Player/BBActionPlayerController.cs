@@ -67,6 +67,4 @@ public class BBActionPlayerController : BBLivingEntity {
 		transform.rotation = Quaternion.Euler(lookVect);
 	}
 	
-	
-	
 }

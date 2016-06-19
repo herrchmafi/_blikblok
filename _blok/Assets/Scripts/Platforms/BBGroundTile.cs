@@ -7,10 +7,17 @@ public class BBGroundTile : MonoBehaviour {
 	
 	private Vector3 toScale;
 	private Vector3 fromScale;
+
+	public BBCoordinate coordinate {
+		get { return this.gridController.CoordinateFromWorldPoint(transform.position); }
+	}
+
+	private BBGridController gridController;
 	// Use this for initialization
 	void Start () {
 		this.timer = new BBTimer();
 		this.Expand();
+		this.gridController = GameObject.FindGameObjectWithTag(BBSceneConstants.layoutControllerTag).GetComponent<BBGridController>();
 	}
 	
 	// Update is called once per frame
@@ -43,4 +50,10 @@ public class BBGroundTile : MonoBehaviour {
 		SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
 		renderer.material.color = Color.blue;
 	}
+
+	public void SpawnExplodeFab(Transform fab) {
+		Transform explosionTransform = (Transform)Instantiate(fab, transform.position, Quaternion.identity);
+		explosionTransform.gameObject.GetComponent<BBExplosion>().Explode(0);
+	}
+
 }

@@ -91,7 +91,7 @@ public class BBSpawnController : MonoBehaviour {
 
 	//	Place wherever you want
 	public SpawnUnit CreateSpawnUnit(BBSpriteFactory.Sprite sprite, float spawnDelaySeconds, BBCoordinate coordinate, bool atValidCoordinate, BBEntityStats stats, int number) {
-		BBNode referencedNode = this.gridController.grid[coordinate.X, coordinate.Y];
+		BBNode referencedNode = this.gridController.grid[coordinate.x, coordinate.y];
 		return new SpawnUnit(sprite, spawnDelaySeconds, this.timer.Seconds, coordinate, atValidCoordinate, stats, number);
 	}
 

@@ -44,9 +44,10 @@ public class BBExplosion : MonoBehaviour {
 				damagable.TakeHit(this.power, null);
 			}
 		}
-
 		BBExplosionResult explosionResult = gameObject.GetComponent<BBExplosionResult>();
-		explosionResult.ExplosionResult();
+		if (explosionResult != null) {
+			explosionResult.ExplosionResult();
+		}
 
 		if (transform.parent != null) {
 			Transform parent = transform.parent;
@@ -56,6 +57,8 @@ public class BBExplosion : MonoBehaviour {
 				parent = parent.parent;
 			}
 			Destroy(parent.gameObject);
+		} else {
+			Destroy(gameObject);
 		}
 	}
 }

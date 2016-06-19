@@ -95,15 +95,15 @@ public class BBPathfinding : MonoBehaviour {
 		Vector2 directionOld = Vector2.zero;
 		
 		for (int i = 1; i < path.Count; i++) {
-			Vector2 directionNew = new Vector2(path[i - 1].Coordinate.X - path[i].Coordinate.X, path[i - 1].Coordinate.Y - path[i].Coordinate.Y);
+			Vector2 directionNew = new Vector2(path[i - 1].Coordinate.x - path[i].Coordinate.x, path[i - 1].Coordinate.y - path[i].Coordinate.y);
 			waypoints.Add(path[i].WorldPos);
 		}
 		return waypoints.ToArray();
 	}
-	
+
 	private int GetDistance(BBNode a, BBNode b) {
-		int distX = Mathf.Abs(a.Coordinate.X - b.Coordinate.X);
-		int distY = Mathf.Abs(a.Coordinate.Y - b.Coordinate.Y);
+		int distX = Mathf.Abs(a.Coordinate.x - b.Coordinate.x);
+		int distY = Mathf.Abs(a.Coordinate.y - b.Coordinate.y);
 		
 		if (distX > distY) {
 			return this.diagonalMultiplier * distY + this.straightMultiplier * (distX - distY);
